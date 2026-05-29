@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-facade-xml>
+
+    <!-- ====================================================== -->
+    <!-- ENUM TYPES -->
+    <!-- ====================================================== -->
+
+    <moqui.basic.EnumerationType
+            enumTypeId="PartyType"
+            description="Party Type"/>
+
+    <moqui.basic.Enumeration
+            enumId="PERSON"
+            enumTypeId="PartyType"
+            description="Person"/>
+
+    <moqui.basic.Enumeration
+            enumId="PARTY_GROUP"
+            enumTypeId="PartyType"
+            description="Party Group"/>
+
+    <moqui.basic.EnumerationType
+            enumTypeId="ContactMechType"
+            description="Contact Mechanism Type"/>
+
+    <moqui.basic.Enumeration
+            enumId="EMAIL"
+            enumTypeId="ContactMechType"
+            description="Email"/>
+
+    <moqui.basic.Enumeration
+            enumId="TELECOM_NUMBER"
+            enumTypeId="ContactMechType"
+            description="Phone Number"/>
+
+    <moqui.basic.Enumeration
+            enumId="POSTAL_ADDRESS"
+            enumTypeId="ContactMechType"
+            description="Postal Address"/>
+
+    <!-- ====================================================== -->
+    <!-- PARTY -->
+    <!-- ====================================================== -->
+
+    <party.Party
+            partyId="P100"
+            partyTypeEnumId="PERSON"
+            createdDate="2026-05-29 00:00:00.000"/>
+
+    <party.Person
+            partyId="P100"
+            firstName="Divyansh"
+            lastName="Bhardwaj"
+            dateOfBirth="2002-01-01"/>
+
+    <!-- ====================================================== -->
+    <!-- PARTY GROUP -->
+    <!-- ====================================================== -->
+
+    <party.Party
+            partyId="G100"
+            partyTypeEnumId="PARTY_GROUP"
+            createdDate="2026-05-29 00:00:00.000"/>
+
+    <party.PartyGroup
+            partyId="G100"
+            groupName="Tech Corp"
+            description="Demo Organization"/>
+
+    <!-- ====================================================== -->
+    <!-- CONTACT MECH -->
+    <!-- ====================================================== -->
+
+    <party.ContactMech
+            contactMechId="CM100"
+            contactMechTypeId="EMAIL"
+            infoString="divyansh@example.com"
+            createdDate="2026-05-29 00:00:00.000"/>
+
+    <party.ContactMech
+            contactMechId="CM101"
+            contactMechTypeId="TELECOM_NUMBER"
+            infoString="+919999999999"
+            createdDate="2026-05-29 00:00:00.000"/>
+
+    <!-- ====================================================== -->
+    <!-- PARTY CONTACT MECH -->
+    <!-- ====================================================== -->
+
+    <party.PartyContactMech
+            partyId="P100"
+            contactMechId="CM100"
+            fromDate="2026-05-29 00:00:00.000"/>
+
+    <party.PartyContactMech
+            partyId="P100"
+            contactMechId="CM101"
+            fromDate="2026-05-29 00:00:00.000"/>
+
+</entity-facade-xml>
