@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+    <service verb="create" noun="Person" type="script" location="component://party/service/party/CreatePerson.groovy" validate="false">
+
+        <in-parameters>
+            <parameter name="partyId" type="String" required="true"/>
+            <parameter name="firstName" type="String" required="true"/>
+            <parameter name="lastName" type="String" required="true"/>
+            <parameter name="dateOfBirth" type="Date"/>
+        </in-parameters>
+
+        <out-parameters>
+             <!-- Out parameter to hold the generated response string -->
+            <parameter name="responseString" type="String"/>
+        </out-parameters>
+    </service>
+
+    <service verb="update" noun="Person" type="script"  location="component://party/service/party/UpdatePerson.groovy" validate="false">
+        <in-parameters>
+            <parameter name="partyId" type="String" required="true"/>
+            <parameter name="firstName" type="String"/>
+            <parameter name="lastName" type="String"/>
+            <parameter name="dateOfBirth" type="Date"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="responseString" type="String"/>
+        </out-parameters>
+    </service>
+
+    <service verb="delete" noun="Person" type="script" location="component://party/service/party/DeletePerson.groovy" validate="false">
+        <in-parameters>
+            <parameter name="partyId" type="String" required="true"/>
+        </in-parameters>
+
+        <out-parameters>
+            <parameter name="responseString" type="String"/>
+        </out-parameters>
+    </service>
+
+    <service verb="find" noun="Person">
+        <in-parameters>
+            <parameter name="partyId"/>
+            <parameter name="firstName"/>
+            <parameter name="lastName"/>
+        </in-parameters>
+        <out-parameters>
+            <!-- Returns a list of Map/EntityValue -->
+            <parameter name="personList" type="List"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="com.moqui.party.Person" list="personList">
+                <search-form-inputs default-orderBy="-partyId"/>
+            </entity-find>
+        </actions>
+    </service>
+
+</services>

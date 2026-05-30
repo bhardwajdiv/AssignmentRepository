@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="person" displayName="Person REST API"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/rest-api-3.xsd"
+          require-authentication="anonymous-all">
+
+    <method type="post" require-authentication="anonymous-all">
+        <service name="party.PartyServices.create#Person"/>
+    </method>
+
+    <method type="put" require-authentication="anonymous-all">
+        <service name="party.PartyServices.update#Person"/>
+    </method>
+
+    <method type="delete" require-authentication="anonymous-all">
+        <service name="party.PartyServices.delete#Person"/>
+    </method>
+
+    <method type="get" require-authentication="anonymous-all">
+        <service name="party.PartyServices.find#Person"/>
+    </method>
+
+</resource>
+
