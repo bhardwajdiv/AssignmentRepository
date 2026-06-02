@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+
+    <!-- Part 2: Activity 1 & 2 - Company & Company Roles -->
+    <Party partyId="COMPANY" partyTypeId="PARTY_GROUP"/>
+    <PartyGroup partyId="COMPANY" groupName="Default Company" logoImageUrl="/resources/uploads/images/company_logo.png"/>
+
+    <!-- Assign Roles to Company -->
+    <PartyRole partyId="COMPANY" roleTypeId="BILL_FROM_VENDOR"/>
+    <PartyRole partyId="COMPANY" roleTypeId="SHIP_FROM_VENDOR"/>
+    <PartyRole partyId="COMPANY" roleTypeId="BILL_TO_CUSTOMER"/>
+    <PartyRole partyId="COMPANY" roleTypeId="INTERNAL_ORGANIZATIO"/>
+    <PartyRole partyId="COMPANY" roleTypeId="SUPPLIER_AGENT"/>
+    <PartyRole partyId="COMPANY" roleTypeId="SUPPLIER"/>
+    <PartyRole partyId="COMPANY" roleTypeId="VENDOR"/>
+
+    <!-- Part 2: Activity 3 - Product Store Group -->
+    <ProductStoreGroup productStoreGroupId="STORE_GROUP" productStoreGroupName="Company Store Group" description="Company Store Group"/>
+
+    <!-- Part 2: Activity 4 - Product Store -->
+    <!-- reserveInventory="N" is used for the Non-reserving inventory policy -->
+    <ProductStore productStoreId="STORE"
+                  storeName="Demo Store"
+                  primaryStoreGroupId="STORE_GROUP"
+                  payToPartyId="COMPANY"
+                  reserveInventory="N"
+                  defaultLocaleString="en_US"
+                  defaultCurrencyUomId="USD"
+                  salesChannelEnumId="WEB_SALES_CHANNEL"
+                  headerApprovedStatusId="ORDER_APPROVED"
+                  itemApprovedStatusId="ITEM_APPROVED"
+                  inventoryFacilityId="STORE_FACILITY"
+                  isImmediatelyFulfilled="Y"
+                  oneInventoryFacilitySize="1"
+                  isDemoStore="Y"
+                  viewCartOnAdd="N"
+                  checkInventory="N"/>
+
+</entity-engine-xml>

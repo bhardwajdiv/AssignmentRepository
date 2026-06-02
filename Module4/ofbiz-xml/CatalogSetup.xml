@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+
+    <!-- Part 3: Activity 1 - Shoes Catalog -->
+    <ProdCatalog prodCatalogId="SHOES_CATALOG" catalogName="Shoes Catalog"/>
+    <ProductStoreCatalog productStoreId="STORE" prodCatalogId="SHOES_CATALOG" fromDate="2026-01-01 00:00:00.000" sequenceNum="1"/>
+
+    <!-- Define Categories -->
+    <ProductCategory productCategoryId="SHOES_ROOT" productCategoryTypeId="CATALOG_CATEGORY" description="Browse Root"/>
+    <ProductCategory productCategoryId="SHOES_MEN" productCategoryTypeId="CATALOG_CATEGORY" description="Men"/>
+    <ProductCategory productCategoryId="SHOES_WOMEN" productCategoryTypeId="CATALOG_CATEGORY" description="Women"/>
+    <ProductCategory productCategoryId="SHOES_CHILDREN" productCategoryTypeId="CATALOG_CATEGORY" description="Children"/>
+    <ProductCategory productCategoryId="SHOES_PROMOTION" productCategoryTypeId="CATALOG_CATEGORY" description="Promotion"/>
+
+    <!-- Men Subcategories -->
+    <ProductCategory productCategoryId="SHOES_MSPORTS" productCategoryTypeId="CATALOG_CATEGORY" description="MSports"/>
+    <ProductCategory productCategoryId="SHOES_MFORMAL" productCategoryTypeId="CATALOG_CATEGORY" description="MFormal"/>
+    <ProductCategory productCategoryId="SHOES_MPARTY" productCategoryTypeId="CATALOG_CATEGORY" description="MParty"/>
+
+    <!-- Women Subcategories -->
+    <ProductCategory productCategoryId="SHOES_WSPORTS" productCategoryTypeId="CATALOG_CATEGORY" description="WSports"/>
+    <ProductCategory productCategoryId="SHOES_WFORMAL" productCategoryTypeId="CATALOG_CATEGORY" description="WFormal"/>
+    <ProductCategory productCategoryId="SHOES_WPARTY" productCategoryTypeId="CATALOG_CATEGORY" description="WParty"/>
+
+    <!-- Catalog-Category Association -->
+    <ProdCatalogCategory prodCatalogId="SHOES_CATALOG" productCategoryId="SHOES_ROOT" prodCatalogCategoryTypeId="PCCT_BROWSE_ROOT" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Category Rollups -->
+    <ProductCategoryRollup parentProductCategoryId="SHOES_ROOT" productCategoryId="SHOES_MEN" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryRollup parentProductCategoryId="SHOES_ROOT" productCategoryId="SHOES_WOMEN" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryRollup parentProductCategoryId="SHOES_ROOT" productCategoryId="SHOES_CHILDREN" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryRollup parentProductCategoryId="SHOES_ROOT" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <ProductCategoryRollup parentProductCategoryId="SHOES_MEN" productCategoryId="SHOES_MSPORTS" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryRollup parentProductCategoryId="SHOES_MEN" productCategoryId="SHOES_MFORMAL" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryRollup parentProductCategoryId="SHOES_MEN" productCategoryId="SHOES_MPARTY" fromDate="2026-01-01 00:00:00.000"/>
+
+    <ProductCategoryRollup parentProductCategoryId="SHOES_WOMEN" productCategoryId="SHOES_WSPORTS" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryRollup parentProductCategoryId="SHOES_WOMEN" productCategoryId="SHOES_WFORMAL" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryRollup parentProductCategoryId="SHOES_WOMEN" productCategoryId="SHOES_WPARTY" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Part 3: Activity 2 - Define Features -->
+    <ProductFeatureType productFeatureTypeId="COLOR" description="Color"/>
+    <ProductFeatureType productFeatureTypeId="SIZE" description="Size"/>
+
+    <!-- Color Features -->
+    <ProductFeature productFeatureId="COLOR_RED" productFeatureTypeId="COLOR" description="Red"/>
+    <ProductFeature productFeatureId="COLOR_BLACK" productFeatureTypeId="COLOR" description="Black"/>
+    <ProductFeature productFeatureId="COLOR_WHITE" productFeatureTypeId="COLOR" description="White"/>
+    <ProductFeature productFeatureId="COLOR_BROWN" productFeatureTypeId="COLOR" description="Brown"/>
+
+    <!-- Size Features -->
+    <ProductFeature productFeatureId="SIZE_2" productFeatureTypeId="SIZE" description="2"/>
+    <ProductFeature productFeatureId="SIZE_3" productFeatureTypeId="SIZE" description="3"/>
+    <ProductFeature productFeatureId="SIZE_4" productFeatureTypeId="SIZE" description="4"/>
+    <ProductFeature productFeatureId="SIZE_5" productFeatureTypeId="SIZE" description="5"/>
+    <ProductFeature productFeatureId="SIZE_7" productFeatureTypeId="SIZE" description="7"/>
+    <ProductFeature productFeatureId="SIZE_8" productFeatureTypeId="SIZE" description="8"/>
+    <ProductFeature productFeatureId="SIZE_9" productFeatureTypeId="SIZE" description="9"/>
+    <ProductFeature productFeatureId="SIZE_10" productFeatureTypeId="SIZE" description="10"/>
+    <ProductFeature productFeatureId="SIZE_11" productFeatureTypeId="SIZE" description="11"/>
+
+
+    <!-- Define Products (Virtual) -->
+    <!-- Men > MSports -->
+    <Product productId="MS-1" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Men Sports Shoe 1"/>
+    <ProductCategoryMember productId="MS-1" productCategoryId="SHOES_MSPORTS" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="MS-1" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="MS-2" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Men Sports Shoe 2"/>
+    <ProductCategoryMember productId="MS-2" productCategoryId="SHOES_MSPORTS" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Men > MFormal -->
+    <Product productId="MF-1" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Men Formal Shoe 1"/>
+    <ProductCategoryMember productId="MF-1" productCategoryId="SHOES_MFORMAL" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="MF-2" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Men Formal Shoe 2"/>
+    <ProductCategoryMember productId="MF-2" productCategoryId="SHOES_MFORMAL" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="MF-2" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Men > MParty -->
+    <Product productId="MP-1" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Men Party Shoe 1"/>
+    <ProductCategoryMember productId="MP-1" productCategoryId="SHOES_MPARTY" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="MP-1" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="MP-2" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Men Party Shoe 2"/>
+    <ProductCategoryMember productId="MP-2" productCategoryId="SHOES_MPARTY" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Women > WSports -->
+    <Product productId="WS-1" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Women Sports Shoe 1"/>
+    <ProductCategoryMember productId="WS-1" productCategoryId="SHOES_WSPORTS" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="WS-1" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="WS-2" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Women Sports Shoe 2"/>
+    <ProductCategoryMember productId="WS-2" productCategoryId="SHOES_WSPORTS" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Women > WFormal -->
+    <Product productId="WF-1" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Women Formal Shoe 1"/>
+    <ProductCategoryMember productId="WF-1" productCategoryId="SHOES_WFORMAL" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="WF-1" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="WF-2" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Women Formal Shoe 2"/>
+    <ProductCategoryMember productId="WF-2" productCategoryId="SHOES_WFORMAL" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Women > WParty -->
+    <Product productId="WP-1" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Women Party Shoe 1"/>
+    <ProductCategoryMember productId="WP-1" productCategoryId="SHOES_WPARTY" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="WP-1" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="WP-2" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Women Party Shoe 2"/>
+    <ProductCategoryMember productId="WP-2" productCategoryId="SHOES_WPARTY" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Children -->
+    <Product productId="C-1" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Children Shoe 1"/>
+    <ProductCategoryMember productId="C-1" productCategoryId="SHOES_CHILDREN" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="C-1" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="C-2" productTypeId="FINISHED_GOOD" isVirtual="Y" isVariant="N" internalName="Children Shoe 2"/>
+    <ProductCategoryMember productId="C-2" productCategoryId="SHOES_CHILDREN" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductCategoryMember productId="C-2" productCategoryId="SHOES_PROMOTION" fromDate="2026-01-01 00:00:00.000"/>
+
+
+    <!-- Define Product Variant Records (For Shoes used in Orders & Promotion) -->
+    <!-- MS-1 Variants -->
+    <Product productId="MS-1-W-7" productTypeId="FINISHED_GOOD" isVirtual="N" isVariant="Y" internalName="Men Sports Shoe 1 - White - 7"/>
+    <ProductAssoc productId="MS-1" productIdTo="MS-1-W-7" productAssocTypeId="PRODUCT_VARIANT" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MS-1-W-7" productFeatureId="COLOR_WHITE" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MS-1-W-7" productFeatureId="SIZE_7" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+
+    <Product productId="MS-1-W-8" productTypeId="FINISHED_GOOD" isVirtual="N" isVariant="Y" internalName="Men Sports Shoe 1 - White - 8"/>
+    <ProductAssoc productId="MS-1" productIdTo="MS-1-W-8" productAssocTypeId="PRODUCT_VARIANT" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MS-1-W-8" productFeatureId="COLOR_WHITE" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MS-1-W-8" productFeatureId="SIZE_8" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- MF-2 Variants -->
+    <Product productId="MF-2-W-7" productTypeId="FINISHED_GOOD" isVirtual="N" isVariant="Y" internalName="Men Formal Shoe 2 - White - 7"/>
+    <ProductAssoc productId="MF-2" productIdTo="MF-2-W-7" productAssocTypeId="PRODUCT_VARIANT" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MF-2-W-7" productFeatureId="COLOR_WHITE" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MF-2-W-7" productFeatureId="SIZE_7" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- MP-1 Variants -->
+    <Product productId="MP-1-W-7" productTypeId="FINISHED_GOOD" isVirtual="N" isVariant="Y" internalName="Men Party Shoe 1 - White - 7"/>
+    <ProductAssoc productId="MP-1" productIdTo="MP-1-W-7" productAssocTypeId="PRODUCT_VARIANT" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MP-1-W-7" productFeatureId="COLOR_WHITE" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductFeatureAppl productId="MP-1-W-7" productFeatureId="SIZE_7" productFeatureApplTypeId="STANDARD_FEATURE" fromDate="2026-01-01 00:00:00.000"/>
+
+
+    <!-- Part 3: Activity 3 - Create Promotion -->
+    <ProductPromo productPromoId="SHOES_PROMO" promoName="Shoes Promotion" promoText="Get 10% discount on white and brown shoes in promotion list" userEntered="Y"/>
+    <ProductPromoStore productStoreId="STORE" productPromoId="SHOES_PROMO" fromDate="2026-01-01 00:00:00.000"/>
+    <ProductPromoRule productPromoId="SHOES_PROMO" productPromoRuleId="01" ruleName="Category Discount"/>
+    
+    <!-- Promotion Condition: Order must include items from the SHOES_PROMOTION category -->
+    <ProductPromoCond productPromoId="SHOES_PROMO" productPromoRuleId="01" productPromoCondSeqId="01" inputParamEnumId="PPIP_PRODUCT_TOTAL" operatorEnumId="PPC_GTE" condValue="0.00"/>
+    <ProductPromoCategoryOrProduct productPromoId="SHOES_PROMO" productPromoRuleId="01" productPromoActionSeqId="_NA_" productPromoCondSeqId="01" productCategoryId="SHOES_PROMOTION" promoTypeEnumId="PROMO_PRT_PART_EXP"/>
+
+    <!-- Promotion Action: 10% Discount on selected category items -->
+    <ProductPromoAction productPromoId="SHOES_PROMO" productPromoRuleId="01" productPromoActionSeqId="01" productPromoActionEnumId="PROMO_PROD_DISC" amount="10.0"/>
+    <ProductPromoCategoryOrProduct productPromoId="SHOES_PROMO" productPromoRuleId="01" productPromoActionSeqId="01" productPromoCondSeqId="_NA_" productCategoryId="SHOES_PROMOTION" promoTypeEnumId="PROMO_PRT_PART_EXP"/>
+
+
+    <!-- Part 3: Activity 6 - Facility and Inventory Item Storage -->
+    <Facility facilityId="STORE_FACILITY" facilityTypeId="WAREHOUSE" facilityName="Main Store Warehouse"/>
+    
+    <!-- Add Inventory Items for Variant Products -->
+    <InventoryItem inventoryItemId="INV_MS1_W7" inventoryItemTypeId="NON_SERIAL_INV_ITEM" productId="MS-1-W-7" facilityId="STORE_FACILITY" datetimeReceived="2026-01-01 00:00:00.000" quantityOnHandTotal="100" availableToPromiseTotal="100"/>
+    <InventoryItem inventoryItemId="INV_MS1_W8" inventoryItemTypeId="NON_SERIAL_INV_ITEM" productId="MS-1-W-8" facilityId="STORE_FACILITY" datetimeReceived="2026-01-01 00:00:00.000" quantityOnHandTotal="100" availableToPromiseTotal="100"/>
+    <InventoryItem inventoryItemId="INV_MF2_W7" inventoryItemTypeId="NON_SERIAL_INV_ITEM" productId="MF-2-W-7" facilityId="STORE_FACILITY" datetimeReceived="2026-01-01 00:00:00.000" quantityOnHandTotal="100" availableToPromiseTotal="100"/>
+    <InventoryItem inventoryItemId="INV_MP1_W7" inventoryItemTypeId="NON_SERIAL_INV_ITEM" productId="MP-1-W-7" facilityId="STORE_FACILITY" datetimeReceived="2026-01-01 00:00:00.000" quantityOnHandTotal="100" availableToPromiseTotal="100"/>
+
+</entity-engine-xml>

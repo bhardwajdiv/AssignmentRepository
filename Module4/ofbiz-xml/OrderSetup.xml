@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+
+    <!-- Part 4: Customer Profile setup (Mark Tailor) -->
+    <Party partyId="MARK_TAILOR" partyTypeId="PERSON"/>
+    <Person partyId="MARK_TAILOR" firstName="Mark" lastName="Tailor"/>
+    <PartyRole partyId="MARK_TAILOR" roleTypeId="CUSTOMER"/>
+
+    <!-- Contact Mech: Original Shipping/Billing Address (136 S MAIN ST #A200) -->
+    <ContactMech contactMechId="MARK_POSTAL" contactMechTypeId="POSTAL_ADDRESS"/>
+    <PostalAddress contactMechId="MARK_POSTAL" toName="HotWax Media Inc." address1="136 S MAIN ST #A200" city="Salt Lake City" stateProvinceGeoId="UT" postalCode="84101" countryGeoId="USA"/>
+    <PartyContactMech partyId="MARK_TAILOR" contactMechId="MARK_POSTAL" fromDate="2026-01-01 00:00:00.000"/>
+    <PartyContactMechPurpose partyId="MARK_TAILOR" contactMechId="MARK_POSTAL" contactMechPurposeId="SHIPPING_LOCATION" fromDate="2026-01-01 00:00:00.000"/>
+    <PartyContactMechPurpose partyId="MARK_TAILOR" contactMechId="MARK_POSTAL" contactMechPurposeId="BILLING_LOCATION" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Contact Mech: Original Phone Number -->
+    <ContactMech contactMechId="MARK_PHONE" contactMechTypeId="TELECOM_NUMBER"/>
+    <TelecomNumber contactMechId="MARK_PHONE" countryCode="1" areaCode="877" contactNumber="7364080"/>
+    <PartyContactMech partyId="MARK_TAILOR" contactMechId="MARK_PHONE" fromDate="2026-01-01 00:00:00.000"/>
+    <PartyContactMechPurpose partyId="MARK_TAILOR" contactMechId="MARK_PHONE" contactMechPurposeId="PHONE_SHIPPING" fromDate="2026-01-01 00:00:00.000"/>
+
+    <!-- Contact Mech: Original Email -->
+    <ContactMech contactMechId="MARK_EMAIL" contactMechTypeId="EMAIL_ADDRESS" infoString="mark.tailor@hotwaxmedia.com"/>
+    <PartyContactMech partyId="MARK_TAILOR" contactMechId="MARK_EMAIL" fromDate="2026-01-01 00:00:00.000"/>
+    <PartyContactMechPurpose partyId="MARK_TAILOR" contactMechId="MARK_EMAIL" contactMechPurposeId="PRIMARY_EMAIL" fromDate="2026-01-01 00:00:00.000"/>
+
+
+    <!-- Contact Mech: Activity 4 Updated Shipping/Billing Address (307 W 200 S) -->
+    <ContactMech contactMechId="MARK_POSTAL_UPD" contactMechTypeId="POSTAL_ADDRESS"/>
+    <PostalAddress contactMechId="MARK_POSTAL_UPD" toName="HotWax Media Inc." address1="307 W 200 S" address2="Suite 4003" city="Salt Lake City" stateProvinceGeoId="UT" postalCode="84101" countryGeoId="USA"/>
+    <PartyContactMech partyId="MARK_TAILOR" contactMechId="MARK_POSTAL_UPD" fromDate="2026-06-02 00:00:00.000"/>
+    <PartyContactMechPurpose partyId="MARK_TAILOR" contactMechId="MARK_POSTAL_UPD" contactMechPurposeId="GENERAL_LOCATION" fromDate="2026-06-02 00:00:00.000"/>
+
+    <!-- Contact Mech: Activity 4 Updated Phone Number -->
+    <ContactMech contactMechId="MARK_PHONE_UPD" contactMechTypeId="TELECOM_NUMBER"/>
+    <TelecomNumber contactMechId="MARK_PHONE_UPD" countryCode="1" areaCode="888" contactNumber="4052667"/>
+    <PartyContactMech partyId="MARK_TAILOR" contactMechId="MARK_PHONE_UPD" fromDate="2026-06-02 00:00:00.000"/>
+
+
+    <!-- Billing Methods (Payment Methods for Mark Tailor) -->
+    <!-- Visa Credit Card (for HWMDEMO1000) -->
+    <PaymentMethod paymentMethodId="CC_VISA" paymentMethodTypeId="CREDIT_CARD" partyId="MARK_TAILOR" fromDate="2026-01-01 00:00:00.000"/>
+    <CreditCard paymentMethodId="CC_VISA" cardType="VISA" cardNumber="4111111111111111" expireDate="12/2030"/>
+
+    <!-- AMEX Credit Card (for Completed HWMDEMO1001) -->
+    <PaymentMethod paymentMethodId="CC_AMEX" paymentMethodTypeId="CREDIT_CARD" partyId="MARK_TAILOR" fromDate="2026-06-02 00:00:00.000"/>
+    <CreditCard paymentMethodId="CC_AMEX" cardType="AMEX" cardNumber="370000000000000" expireDate="12/2030"/>
+
+
+    <!-- ====================================================== -->
+    <!-- Order HWMDEMO1000 (Created Status) -->
+    <!-- ====================================================== -->
+    <OrderHeader orderId="HWMDEMO1000" orderTypeId="SALES_ORDER" statusId="ORDER_CREATED" productStoreId="STORE" currencyUom="USD" grandTotal="120.00" remainingSubTotal="120.00" entryDate="2026-06-02 12:00:00.000"/>
+    <OrderRole orderId="HWMDEMO1000" partyId="MARK_TAILOR" roleTypeId="PLACING_CUSTOMER"/>
+    <OrderRole orderId="HWMDEMO1000" partyId="COMPANY" roleTypeId="BILL_FROM_VENDOR"/>
+
+    <OrderItem orderId="HWMDEMO1000" orderItemSeqId="00001" orderItemTypeId="PRODUCT_ORDER_ITEM" productId="MS-1-W-7" quantity="1" selectedAmount="0.00" unitPrice="60.00" unitListPrice="60.00" isModifiedPrice="N" statusId="ITEM_CREATED"/>
+    <OrderItem orderId="HWMDEMO1000" orderItemSeqId="00002" orderItemTypeId="PRODUCT_ORDER_ITEM" productId="MF-2-W-7" quantity="1" selectedAmount="0.00" unitPrice="60.00" unitListPrice="60.00" isModifiedPrice="N" statusId="ITEM_CREATED"/>
+
+    <!-- Order Contact Mechs -->
+    <OrderContactMech orderId="HWMDEMO1000" contactMechId="MARK_POSTAL" contactMechPurposeId="SHIPPING_LOCATION"/>
+    <OrderContactMech orderId="HWMDEMO1000" contactMechId="MARK_POSTAL" contactMechPurposeId="BILLING_LOCATION"/>
+    <OrderContactMech orderId="HWMDEMO1000" contactMechId="MARK_PHONE" contactMechPurposeId="PHONE_SHIPPING"/>
+    <OrderContactMech orderId="HWMDEMO1000" contactMechId="MARK_EMAIL" contactMechPurposeId="PRIMARY_EMAIL"/>
+
+    <!-- Order Shipping & Billing Preferences -->
+    <OrderRouteSegment orderId="HWMDEMO1000" shipGroupSeqId="00001" carrierPartyId="UPS" shipmentMethodTypeId="GROUND" destPostalAddressId="MARK_POSTAL" destTelecomNumberId="MARK_PHONE"/>
+    <OrderItemShipGroupMember orderId="HWMDEMO1000" shipGroupSeqId="00001" orderItemSeqId="00001" quantity="1"/>
+    <OrderItemShipGroupMember orderId="HWMDEMO1000" shipGroupSeqId="00001" orderItemSeqId="00002" quantity="1"/>
+    <OrderPaymentPreference orderPaymentPreferenceId="PREF_1000" orderId="HWMDEMO1000" paymentMethodId="CC_VISA" paymentMethodTypeId="CREDIT_CARD" maxAmount="120.00" statusId="PAYMENT_NOT_AUTH"/>
+
+
+    <!-- ====================================================== -->
+    <!-- Order HWMDEMO1001 (Completed & Fulfilled Status) -->
+    <!-- ====================================================== -->
+    <OrderHeader orderId="HWMDEMO1001" orderTypeId="SALES_ORDER" statusId="ORDER_COMPLETED" productStoreId="STORE" currencyUom="USD" grandTotal="120.00" remainingSubTotal="120.00" entryDate="2026-06-02 12:00:00.000"/>
+    <OrderRole orderId="HWMDEMO1001" partyId="MARK_TAILOR" roleTypeId="PLACING_CUSTOMER"/>
+    <OrderRole orderId="HWMDEMO1001" partyId="COMPANY" roleTypeId="BILL_FROM_VENDOR"/>
+
+    <OrderItem orderId="HWMDEMO1001" orderItemSeqId="00001" orderItemTypeId="PRODUCT_ORDER_ITEM" productId="MS-1-W-7" quantity="1" selectedAmount="0.00" unitPrice="60.00" unitListPrice="60.00" isModifiedPrice="N" statusId="ITEM_COMPLETED"/>
+    <OrderItem orderId="HWMDEMO1001" orderItemSeqId="00002" orderItemTypeId="PRODUCT_ORDER_ITEM" productId="MF-2-W-7" quantity="1" selectedAmount="0.00" unitPrice="60.00" unitListPrice="60.00" isModifiedPrice="N" statusId="ITEM_COMPLETED"/>
+
+    <!-- Updated Order Contact Mechs -->
+    <OrderContactMech orderId="HWMDEMO1001" contactMechId="MARK_POSTAL_UPD" contactMechPurposeId="SHIPPING_LOCATION"/>
+    <OrderContactMech orderId="HWMDEMO1001" contactMechId="MARK_POSTAL_UPD" contactMechPurposeId="BILLING_LOCATION"/>
+    <OrderContactMech orderId="HWMDEMO1001" contactMechId="MARK_PHONE_UPD" contactMechPurposeId="PHONE_SHIPPING"/>
+    <OrderContactMech orderId="HWMDEMO1001" contactMechId="MARK_EMAIL" contactMechPurposeId="PRIMARY_EMAIL"/>
+
+    <!-- Order Shipping & Billing Preferences -->
+    <OrderRouteSegment orderId="HWMDEMO1001" shipGroupSeqId="00001" carrierPartyId="UPS" shipmentMethodTypeId="GROUND" destPostalAddressId="MARK_POSTAL_UPD" destTelecomNumberId="MARK_PHONE_UPD"/>
+    <OrderItemShipGroupMember orderId="HWMDEMO1001" shipGroupSeqId="00001" orderItemSeqId="00001" quantity="1"/>
+    <OrderItemShipGroupMember orderId="HWMDEMO1001" shipGroupSeqId="00001" orderItemSeqId="00002" quantity="1"/>
+    <OrderPaymentPreference orderPaymentPreferenceId="PREF_1001" orderId="HWMDEMO1001" paymentMethodId="CC_AMEX" paymentMethodTypeId="CREDIT_CARD" maxAmount="120.00" statusId="PAYMENT_SETTLED"/>
+
+
+    <!-- ====================================================== -->
+    <!-- Shipment Fulfillment (Activity 4) -->
+    <!-- ====================================================== -->
+    <Shipment shipmentId="HwmDemo1000" shipmentTypeId="SALES_SHIPMENT" statusId="SHIPMENT_SHIPPED" primaryOrderId="HWMDEMO1001" originFacilityId="STORE_FACILITY" destinationContactMechId="MARK_POSTAL_UPD" destinationTelecomNumberId="MARK_PHONE_UPD" partyIdTo="MARK_TAILOR" partyIdFrom="COMPANY" estimatedShipDate="2026-06-02 14:00:00.000"/>
+    <ShipmentItem shipmentId="HwmDemo1000" shipmentItemSeqId="00001" productId="MS-1-W-7" quantity="1"/>
+    <ShipmentItem shipmentId="HwmDemo1000" shipmentItemSeqId="00002" productId="MF-2-W-7" quantity="1"/>
+
+    <!-- Item Issuance associating the Inventory Items to the Shipment and Order -->
+    <ItemIssuance itemIssuanceId="ISS_00001" orderId="HWMDEMO1001" orderItemSeqId="00001" shipmentId="HwmDemo1000" shipmentItemSeqId="00001" inventoryItemId="INV_MS1_W7" quantity="1" issuedDateTime="2026-06-02 14:00:00.000"/>
+    <ItemIssuance itemIssuanceId="ISS_00002" orderId="HWMDEMO1001" orderItemSeqId="00002" shipmentId="HwmDemo1000" shipmentItemSeqId="00002" inventoryItemId="INV_MF2_W7" quantity="1" issuedDateTime="2026-06-02 14:00:00.000"/>
+
+</entity-engine-xml>
