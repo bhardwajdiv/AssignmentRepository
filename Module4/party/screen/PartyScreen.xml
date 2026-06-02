@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all">
+
+    <!-- Find Transition -->
+    <transition name="find">
+        <actions>
+            <entity-find entity-name="party.Party"
+                         list="partyList">
+                <search-form-inputs/>
+            </entity-find>
+        </actions>
+        <default-response/>
+    </transition>
+
+    <!-- Create Transition -->
+    <transition name="createParty">
+        <actions>
+            <service-call name="create#party.Party" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <!-- Load Party Records -->
+    <actions>
+        <entity-find entity-name="party.Party"
+                     list="partyList">
+            <search-form-inputs/>
+        </entity-find>
+    </actions>
+
+    <widgets>
+
+        <label type="h1" text="Party Records"/>
+
+        <!-- Create Party Dialog -->
+        <container-dialog id="CreatePartyDialog"
+                          button-text="Create Party">
+
+          <form-single name="CreatePartyForm"
+             transition="createParty">
+
+    <field name="partyId">
+        <default-field title="Party ID">
+            <text-line/>
+        </default-field>
+    </field>
+
+    <field name="partyName">
+        <default-field title="Party Name">
+            <text-line/>
+        </default-field>
+    </field>
+
+    <field name="submitButton">
+        <default-field title="Create Party">
+            <submit/>
+        </default-field>
+    </field>
+
+</form-single>
+
+        </container-dialog>
+
+        <!-- Party List -->
+        <form-list name="PartyList"
+           list="partyList" skip-form="true">
+
+    <field name="partyId">
+        <default-field title="Party ID"><display/></default-field>
+    </field>
+
+    <field name="partyName">
+        <default-field title="Party Name"><display/></default-field>
+    </field>
+
+    <field name="createdDate">
+        <default-field title="Created Date"><display/></default-field>
+    </field>
+
+</form-list>
+
+    </widgets>
+
+</screen>

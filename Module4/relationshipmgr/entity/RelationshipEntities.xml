@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
+
+    <entity entity-name="Party"
+            package="relationshipmgr"
+            cache="true"
+            authorize-skip="true"
+            table-name="RM_PARTY">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="partyTypeEnumId" type="id"/>
+        <field name="partyName" type="text-medium"/>
+        <field name="createdDate" type="date-time"/>
+
+        <relationship type="one"
+                      title="PartyType"
+                      related="moqui.basic.Enumeration">
+            <key-map field-name="partyTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="Person"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_PERSON">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="salutation" type="text-short"/>
+        <field name="firstName" type="text-medium"/>
+        <field name="middleName" type="text-medium"/>
+        <field name="lastName" type="text-medium"/>
+        <field name="personalTitle" type="text-short"/>
+        <field name="suffix" type="text-short"/>
+        <field name="nickname" type="text-short"/>
+        <field name="dateOfBirth" type="date"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.Party">
+            <key-map field-name="partyId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="Organization"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_ORGANIZATION">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="organizationName" type="text-medium"/>
+        <field name="description" type="text-long"/>
+        <field name="parentPartyId" type="id"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.Party">
+            <key-map field-name="partyId"/>
+        </relationship>
+        <relationship type="one"
+                      title="ParentParty"
+                      related="relationshipmgr.Party">
+            <key-map field-name="parentPartyId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="PartyRole"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_PARTY_ROLE">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="roleTypeEnumId" type="id" is-pk="true"/>
+        <field name="fromDate" type="date-time" is-pk="true"/>
+        <field name="thruDate" type="date-time"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.Party">
+            <key-map field-name="partyId"/>
+        </relationship>
+        <relationship type="one"
+                      title="RoleType"
+                      related="moqui.basic.Enumeration">
+            <key-map field-name="roleTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="PartyRelationship"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_PARTY_RELATIONSHIP">
+        <field name="fromPartyId" type="id" is-pk="true"/>
+        <field name="toPartyId" type="id" is-pk="true"/>
+        <field name="relationshipTypeEnumId" type="id" is-pk="true"/>
+        <field name="fromRoleTypeId" type="id"/>
+        <field name="toRoleTypeId" type="id"/>
+        <field name="fromDate" type="date-time" is-pk="true"/>
+        <field name="thruDate" type="date-time"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.Party"
+                      title="FromParty">
+            <key-map field-name="fromPartyId"/>
+        </relationship>
+        <relationship type="one"
+                      related="relationshipmgr.Party"
+                      title="ToParty">
+            <key-map field-name="toPartyId"/>
+        </relationship>
+        <relationship type="one"
+                      related="moqui.basic.Enumeration"
+                      title="RelationshipType">
+            <key-map field-name="relationshipTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="ContactMech"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_CONTACT_MECH">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="contactMechTypeEnumId" type="id"/>
+        <field name="infoString" type="text-medium"/>
+        <field name="createdDate" type="date-time"/>
+
+        <relationship type="one"
+                      title="ContactMechType"
+                      related="moqui.basic.Enumeration">
+            <key-map field-name="contactMechTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="PostalAddress"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_POSTAL_ADDRESS">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="address1" type="text-medium"/>
+        <field name="address2" type="text-medium"/>
+        <field name="city" type="text-medium"/>
+        <field name="stateProvince" type="text-medium"/>
+        <field name="postalCode" type="text-medium"/>
+        <field name="country" type="text-medium"/>
+        <field name="geoBoundary" type="text-long"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.ContactMech">
+            <key-map field-name="contactMechId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="TelecomNumber"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_TELECOM_NUMBER">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="countryCode" type="text-short"/>
+        <field name="areaCode" type="text-short"/>
+        <field name="contactNumber" type="text-medium"/>
+        <field name="extension" type="text-short"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.ContactMech">
+            <key-map field-name="contactMechId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="PartyContactMech"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_PARTY_CONTACT_MECH">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="fromDate" type="date-time" is-pk="true"/>
+        <field name="thruDate" type="date-time"/>
+        <field name="purposeEnumId" type="id"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.Party">
+            <key-map field-name="partyId"/>
+        </relationship>
+        <relationship type="one"
+                      related="relationshipmgr.ContactMech">
+            <key-map field-name="contactMechId"/>
+        </relationship>
+        <relationship type="one"
+                      title="Purpose"
+                      related="moqui.basic.Enumeration">
+            <key-map field-name="purposeEnumId"/>
+        </relationship>
+    </entity>
+
+    <entity entity-name="PartyClassification"
+            package="relationshipmgr"
+            authorize-skip="true"
+            table-name="RM_PARTY_CLASSIFICATION">
+        <field name="partyClassificationId" type="id" is-pk="true"/>
+        <field name="partyId" type="id"/>
+        <field name="classificationTypeEnumId" type="id"/>
+        <field name="classificationEnumId" type="id"/>
+        <field name="fromDate" type="date-time"/>
+        <field name="thruDate" type="date-time"/>
+
+        <relationship type="one"
+                      related="relationshipmgr.Party">
+            <key-map field-name="partyId"/>
+        </relationship>
+        <relationship type="one"
+                      title="ClassificationType"
+                      related="moqui.basic.Enumeration">
+            <key-map field-name="classificationTypeEnumId"/>
+        </relationship>
+        <relationship type="one"
+                      title="Classification"
+                      related="moqui.basic.Enumeration">
+            <key-map field-name="classificationEnumId"/>
+        </relationship>
+    </entity>
+
+</entities>

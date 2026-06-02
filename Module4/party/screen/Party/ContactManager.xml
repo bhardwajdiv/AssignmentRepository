@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        default-menu-title="Contact Manager" default-menu-index="2">
+
+    <transition name="storeContact">
+        <service-call name="mantle.party.ContactServices.store#PartyContactMech"/>
+        <default-response url="."/>
+    </transition>
+
+    <actions>
+        <entity-find entity-name="mantle.party.Party" list="partyList"/>
+    </actions>
+
+    <widgets>
+        <container-box>
+            <box-header title="Add/Update Contact Mechanism"/>
+            <box-body>
+                <form-single name="AddContactForm" transition="storeContact">
+                    <field name="partyId">
+                        <default-field title="Party ID">
+                            <drop-down>
+                                <list-options list="partyList" key="${partyId}" text="${partyId} (${partyTypeId})"/>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="contactMechPurposeId">
+                        <default-field title="Purpose">
+                            <drop-down>
+                                <option key="EmailPrimary" text="Primary Email"/>
+                                <option key="PhoneMobile" text="Mobile Phone"/>
+                                <option key="PostalPrimary" text="Primary Postal Address"/>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="infoString"><default-field title="Email String / Web URL (If applicable)"/></field>
+                    <field name="submitBtn"><default-field title="Update Contact Details"><submit/></default-field></field>
+                </form-single>
+            </box-body>
+        </container-box>
+    </widgets>
+</screen>

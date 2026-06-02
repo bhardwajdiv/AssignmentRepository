@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-facade-xml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-facade-data-3.xsd">
+
+    <moqui.basic.EnumerationType enumTypeId="PartyType" description="Party Type"/>
+    <moqui.basic.Enumeration enumId="PERSON" enumTypeId="PartyType" description="Person"/>
+    <moqui.basic.Enumeration enumId="ORGANIZATION" enumTypeId="PartyType" description="Organization"/>
+
+    <moqui.basic.EnumerationType enumTypeId="RoleType" description="Party Role Type"/>
+    <moqui.basic.Enumeration enumId="COLLEGE" enumTypeId="RoleType" description="College"/>
+    <moqui.basic.Enumeration enumId="DEPARTMENT" enumTypeId="RoleType" description="Department"/>
+    <moqui.basic.Enumeration enumId="STUDENT" enumTypeId="RoleType" description="Student"/>
+    <moqui.basic.Enumeration enumId="TEACHING_STAFF" enumTypeId="RoleType" description="Teaching Staff"/>
+    <moqui.basic.Enumeration enumId="EMPLOYEE" enumTypeId="RoleType" description="Employee"/>
+    <moqui.basic.Enumeration enumId="CUSTOMER" enumTypeId="RoleType" description="Customer"/>
+
+    <moqui.basic.EnumerationType enumTypeId="ContactMechType" description="Contact Mechanism Type"/>
+    <moqui.basic.Enumeration enumId="EMAIL" enumTypeId="ContactMechType" description="Email Address"/>
+    <moqui.basic.Enumeration enumId="TELECOM_NUMBER" enumTypeId="ContactMechType" description="Phone Number"/>
+    <moqui.basic.Enumeration enumId="POSTAL_ADDRESS" enumTypeId="ContactMechType" description="Postal Address"/>
+
+    <moqui.basic.EnumerationType enumTypeId="ContactMechPurpose" description="Contact Mechanism Purpose"/>
+    <moqui.basic.Enumeration enumId="PRIMARY_EMAIL" enumTypeId="ContactMechPurpose" description="Primary Email"/>
+    <moqui.basic.Enumeration enumId="MOBILE_PHONE" enumTypeId="ContactMechPurpose" description="Mobile Phone"/>
+    <moqui.basic.Enumeration enumId="WORK_PHONE" enumTypeId="ContactMechPurpose" description="Work Phone"/>
+    <moqui.basic.Enumeration enumId="SHIPPING_ADDRESS" enumTypeId="ContactMechPurpose" description="Shipping Address"/>
+    <moqui.basic.Enumeration enumId="BILLING_ADDRESS" enumTypeId="ContactMechPurpose" description="Billing Address"/>
+
+    <moqui.basic.EnumerationType enumTypeId="RelationshipType" description="Party Relationship Type"/>
+    <moqui.basic.Enumeration enumId="EMPLOYED_BY" enumTypeId="RelationshipType" description="Employed By"/>
+    <moqui.basic.Enumeration enumId="MEMBER_OF" enumTypeId="RelationshipType" description="Member Of"/>
+    <moqui.basic.Enumeration enumId="PART_OF" enumTypeId="RelationshipType" description="Part Of"/>
+    <moqui.basic.Enumeration enumId="STUDIES_AT" enumTypeId="RelationshipType" description="Studies At"/>
+
+    <moqui.basic.EnumerationType enumTypeId="ClassificationType" description="Classification Type"/>
+    <moqui.basic.Enumeration enumId="NAICS" enumTypeId="ClassificationType" description="Industry Classification (NAICS)"/>
+    <moqui.basic.Enumeration enumId="SIZE" enumTypeId="ClassificationType" description="Organization Size"/>
+    <moqui.basic.Enumeration enumId="NAICS_611310" enumTypeId="ClassificationType" description="Computer Training and Technical Schools"/>
+    <moqui.basic.Enumeration enumId="SIZE_SMALL" enumTypeId="ClassificationType" description="Small Organization"/>
+    <moqui.basic.Enumeration enumId="SIZE_MEDIUM" enumTypeId="ClassificationType" description="Medium Organization"/>
+
+    <relationshipmgr.Party partyId="COLLEGE_01" partyTypeEnumId="ORGANIZATION" partyName="State Engineering College" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.Organization partyId="COLLEGE_01" organizationName="State Engineering College" description="College campus and administration."/>
+
+    <relationshipmgr.Party partyId="DEPT_CS" partyTypeEnumId="ORGANIZATION" partyName="Computer Science Department" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.Organization partyId="DEPT_CS" organizationName="Computer Science Department" description="Department for CS and Software Engineering." parentPartyId="COLLEGE_01"/>
+
+    <relationshipmgr.Party partyId="STU_BOB" partyTypeEnumId="PERSON" partyName="Bob Jones" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.Person partyId="STU_BOB" firstName="Bob" lastName="Jones" dateOfBirth="2002-07-10"/>
+
+    <relationshipmgr.Party partyId="FAC_DR_SMITH" partyTypeEnumId="PERSON" partyName="Dr. Sarah Smith" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.Person partyId="FAC_DR_SMITH" firstName="Sarah" lastName="Smith" personalTitle="Dr."/>
+
+    <relationshipmgr.Party partyId="STU_ALICE" partyTypeEnumId="PERSON" partyName="Alice Kumar" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.Person partyId="STU_ALICE" firstName="Alice" lastName="Kumar" dateOfBirth="2003-02-14"/>
+
+    <relationshipmgr.PartyRole partyId="COLLEGE_01" roleTypeEnumId="COLLEGE" fromDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.PartyRole partyId="DEPT_CS" roleTypeEnumId="DEPARTMENT" fromDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.PartyRole partyId="STU_BOB" roleTypeEnumId="STUDENT" fromDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.PartyRole partyId="FAC_DR_SMITH" roleTypeEnumId="TEACHING_STAFF" fromDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.PartyRole partyId="STU_ALICE" roleTypeEnumId="STUDENT" fromDate="2026-05-29 00:00:00.000"/>
+
+    <relationshipmgr.PartyRelationship fromPartyId="STU_BOB" toPartyId="DEPT_CS" relationshipTypeEnumId="STUDIES_AT" fromDate="2026-08-01 00:00:00.000"/>
+    <relationshipmgr.PartyRelationship fromPartyId="FAC_DR_SMITH" toPartyId="DEPT_CS" relationshipTypeEnumId="EMPLOYED_BY" fromDate="2025-09-01 00:00:00.000"/>
+    <relationshipmgr.PartyRelationship fromPartyId="DEPT_CS" toPartyId="COLLEGE_01" relationshipTypeEnumId="PART_OF" fromDate="2026-01-01 00:00:00.000"/>
+
+    <relationshipmgr.ContactMech contactMechId="CM100" contactMechTypeEnumId="EMAIL" infoString="bob.jones@college.edu" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.ContactMech contactMechId="CM101" contactMechTypeEnumId="TELECOM_NUMBER" infoString="+919876543210" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.ContactMech contactMechId="CM102" contactMechTypeEnumId="EMAIL" infoString="sarah.smith@college.edu" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.ContactMech contactMechId="CM103" contactMechTypeEnumId="TELECOM_NUMBER" infoString="+919012345678" createdDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.ContactMech contactMechId="CM104" contactMechTypeEnumId="POSTAL_ADDRESS" infoString="123 College Avenue, Cityville" createdDate="2026-05-29 00:00:00.000"/>
+
+    <relationshipmgr.PostalAddress contactMechId="CM104" address1="123 College Avenue" address2="" city="Cityville" stateProvince="State" postalCode="123456" country="India" geoBoundary="City boundary approx."/>
+
+    <relationshipmgr.TelecomNumber contactMechId="CM101" countryCode="+91" areaCode="98" contactNumber="76543210" extension=""/>
+    <relationshipmgr.TelecomNumber contactMechId="CM103" countryCode="+91" areaCode="90" contactNumber="12345678" extension=""/>
+
+    <relationshipmgr.PartyContactMech partyId="STU_BOB" contactMechId="CM100" fromDate="2026-05-29 00:00:00.000" purposeEnumId="PRIMARY_EMAIL"/>
+    <relationshipmgr.PartyContactMech partyId="STU_BOB" contactMechId="CM101" fromDate="2026-05-29 00:00:00.000" purposeEnumId="MOBILE_PHONE"/>
+    <relationshipmgr.PartyContactMech partyId="FAC_DR_SMITH" contactMechId="CM102" fromDate="2026-05-29 00:00:00.000" purposeEnumId="PRIMARY_EMAIL"/>
+    <relationshipmgr.PartyContactMech partyId="FAC_DR_SMITH" contactMechId="CM103" fromDate="2026-05-29 00:00:00.000" purposeEnumId="WORK_PHONE"/>
+    <relationshipmgr.PartyContactMech partyId="COLLEGE_01" contactMechId="CM104" fromDate="2026-05-29 00:00:00.000" purposeEnumId="SHIPPING_ADDRESS"/>
+
+    <relationshipmgr.PartyClassification partyClassificationId="PC100" partyId="COLLEGE_01" classificationTypeEnumId="NAICS" classificationEnumId="NAICS_611310" fromDate="2026-05-29 00:00:00.000"/>
+    <relationshipmgr.PartyClassification partyClassificationId="PC101" partyId="COLLEGE_01" classificationTypeEnumId="SIZE" classificationEnumId="SIZE_MEDIUM" fromDate="2026-05-29 00:00:00.000"/>
+
+</entity-facade-xml>

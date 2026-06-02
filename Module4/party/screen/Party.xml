@@ -1,0 +1,10 @@
+<entity entity-name="Party"
+        package="party"
+        cache="true"
+        authorize-skip="true">
+
+    <field name="partyId" type="id" is-pk="true"/>
+    <field name="partyName" type="text-medium"/>
+    <field name="createdDate" type="date-time"/>
+
+</entity>

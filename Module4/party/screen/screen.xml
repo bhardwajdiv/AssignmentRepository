@@ -1,0 +1,4 @@
+<subscreens default-item="partyScreen">
+    <subscreens-item name="partyScreen"
+                     location="component://party/screen/PartyScreen.xml"/>
+</subscreens>

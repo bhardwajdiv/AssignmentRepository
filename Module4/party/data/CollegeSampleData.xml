@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-facade-data-3.xsd">
+    
+    <mantle.party.RoleType roleTypeId="COLLEGE" description="Educational College"/>
+    <mantle.party.RoleType roleTypeId="DEPARTMENT" description="Academic Department"/>
+    <mantle.party.RoleType roleTypeId="STUDENT" description="Enrolled Student"/>
+    <mantle.party.RoleType roleTypeId="TEACHING_STAFF" description="Faculty Staff"/>
+
+    <mantle.party.Party partyId="CAMPUS_01" partyTypeId="ORGANIZATION"/>
+    <mantle.party.Organization partyId="CAMPUS_01" organizationName="State Engineering College"/>
+    <mantle.party.PartyRole partyId="CAMPUS_01" roleTypeId="COLLEGE"/>
+
+    <mantle.party.Party partyId="DEPT_CS" partyTypeId="ORGANIZATION"/>
+    <mantle.party.Organization partyId="DEPT_CS" organizationName="Computer Science &amp; Engineering"/>
+    <mantle.party.PartyRole partyId="DEPT_CS" roleTypeId="DEPARTMENT"/>
+
+    <mantle.party.Party partyId="STU_BOB" partyTypeId="PERSON"/>
+    <mantle.party.Person partyId="STU_BOB" firstName="Bob" lastName="Jones"/>
+    <mantle.party.PartyRole partyId="STU_BOB" roleTypeId="STUDENT"/>
+
+    <!-- Contact mechanisms for sample parties -->
+    <mantle.party.ContactMech contactMechId="CM_BOB_EMAIL" contactMechTypeId="EMAIL" infoString="bob.jones@college.edu" createdDate="2026-05-29 00:00:00.000"/>
+    <mantle.party.ContactMech contactMechId="CM_BOB_PHONE" contactMechTypeId="TELECOM_NUMBER" infoString="+919876543210" createdDate="2026-05-29 00:00:00.000"/>
+    <mantle.party.ContactMech contactMechId="CM_CAMPUS_POST" contactMechTypeId="POSTAL_ADDRESS" infoString="State Engineering College, 123 College Ave, Cityville" createdDate="2026-05-29 00:00:00.000"/>
+
+    <mantle.party.PartyContactMech partyId="STU_BOB" contactMechId="CM_BOB_EMAIL" fromDate="2026-05-29 00:00:00.000"/>
+    <mantle.party.PartyContactMech partyId="STU_BOB" contactMechId="CM_BOB_PHONE" fromDate="2026-05-29 00:00:00.000"/>
+    <mantle.party.PartyContactMech partyId="CAMPUS_01" contactMechId="CM_CAMPUS_POST" fromDate="2026-05-29 00:00:00.000"/>
+
+    <moqui.security.UserGroup userGroupId="ADMIN" description="System Administrator Group"/>
+    <moqui.security.UserAccountUserGroup userId="hotwax.user" userGroupId="ADMIN" fromDate="2026-01-01 00:00:00.000"/>
+    <moqui.security.UserGroupPermission userGroupId="ADMIN" artifactTypeEnumId="AtypeScreenGroup" artifactName="moqui" actionEnumId="AuthView" authzTypeEnumId="AuthzAllow"/>
+
+</entity-facade-data>

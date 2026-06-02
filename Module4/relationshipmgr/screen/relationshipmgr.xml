@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all"
+        default-menu-title="Relationship Manager" default-menu-index="20">
+
+    <transition name="findParties">
+        <actions>
+            <entity-find entity-name="relationshipmgr.Party" list="partyList">
+                <search-form-inputs/>
+            </entity-find>
+        </actions>
+        <default-response/>
+    </transition>
+
+    <transition name="createParty">
+        <actions>
+            <service-call name="create#relationshipmgr.Party" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createPerson">
+        <actions>
+            <service-call name="create#relationshipmgr.Person" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createOrganization">
+        <actions>
+            <service-call name="create#relationshipmgr.Organization" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createPartyRole">
+        <actions>
+            <service-call name="create#relationshipmgr.PartyRole" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createContactMech">
+        <actions>
+            <service-call name="create#relationshipmgr.ContactMech" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createPartyContactMech">
+        <actions>
+            <service-call name="create#relationshipmgr.PartyContactMech" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createPartyRelationship">
+        <actions>
+            <service-call name="create#relationshipmgr.PartyRelationship" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <actions>
+        <entity-find entity-name="relationshipmgr.Party" list="partyList">
+            <search-form-inputs/>
+        </entity-find>
+        <entity-find entity-name="relationshipmgr.ContactMech" list="contactMechList">
+            <search-form-inputs/>
+        </entity-find>
+        <entity-find entity-name="relationshipmgr.PartyRelationship" list="partyRelationshipList">
+            <search-form-inputs/>
+        </entity-find>
+        <entity-find entity-name="relationshipmgr.PartyContactMech" list="partyContactMechList">
+            <search-form-inputs/>
+        </entity-find>
+    </actions>
+
+    <widgets>
+        <label type="h1" text="Relationship Manager"/>
+
+        <container-box>
+            <box-header title="Create Party"/>
+            <box-body>
+                <form-single name="CreatePartyForm" transition="createParty">
+                    <field name="partyId"><default-field title="Party ID"><text-line/></default-field></field>
+                    <field name="partyTypeEnumId">
+                        <default-field title="Party Type">
+                            <drop-down>
+                                <option key="PERSON" text="Person"/>
+                                <option key="ORGANIZATION" text="Organization"/>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="partyName"><default-field title="Party Name"><text-line/></default-field></field>
+                    <field name="submitBtn"><default-field title="Create Party"><submit/></default-field></field>
+                </form-single>
+            </box-body>
+        </container-box>
+
+        <container-box>
+            <box-header title="Create Person/Organization Details"/>
+            <box-body>
+                <form-single name="CreatePersonForm" transition="createPerson">
+                    <field name="partyId"><default-field title="Person Party ID"><text-line/></default-field></field>
+                    <field name="salutation"><default-field title="Salutation"><text-line/></default-field></field>
+                    <field name="firstName"><default-field title="First Name"><text-line/></default-field></field>
+                    <field name="middleName"><default-field title="Middle Name"><text-line/></default-field></field>
+                    <field name="lastName"><default-field title="Last Name"><text-line/></default-field></field>
+                    <field name="dateOfBirth"><default-field title="Birth Date"><date-time type="date"/></default-field></field>
+                    <field name="submitBtn"><default-field title="Create Person"><submit/></default-field></field>
+                </form-single>
+                <form-single name="CreateOrganizationForm" transition="createOrganization">
+                    <field name="partyId"><default-field title="Organization Party ID"><text-line/></default-field></field>
+                    <field name="organizationName"><default-field title="Organization Name"><text-line/></default-field></field>
+                    <field name="description"><default-field title="Description"><text-line/></default-field></field>
+                    <field name="parentPartyId"><default-field title="Parent Party ID"><text-line/></default-field></field>
+                    <field name="submitBtn"><default-field title="Create Organization"><submit/></default-field></field>
+                </form-single>
+            </box-body>
+        </container-box>
+
+        <container-box>
+            <box-header title="Assign Party Role"/>
+            <box-body>
+                <form-single name="CreatePartyRoleForm" transition="createPartyRole">
+                    <field name="partyId"><default-field title="Party ID"><text-line/></default-field></field>
+                    <field name="roleTypeEnumId">
+                        <default-field title="Role Type">
+                            <drop-down>
+                                <option key="COLLEGE" text="College"/>
+                                <option key="DEPARTMENT" text="Department"/>
+                                <option key="STUDENT" text="Student"/>
+                                <option key="TEACHING_STAFF" text="Teaching Staff"/>
+                                <option key="EMPLOYEE" text="Employee"/>
+                                <option key="CUSTOMER" text="Customer"/>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="fromDate"><default-field title="From Date"><date-time/></default-field></field>
+                    <field name="submitBtn"><default-field title="Assign Role"><submit/></default-field></field>
+                </form-single>
+            </box-body>
+        </container-box>
+
+        <container-box>
+            <box-header title="Contact Mechanism"/>
+            <box-body>
+                <form-single name="CreateContactMechForm" transition="createContactMech">
+                    <field name="contactMechId"><default-field title="ContactMech ID"><text-line/></default-field></field>
+                    <field name="contactMechTypeEnumId">
+                        <default-field title="Contact Type">
+                            <drop-down>
+                                <option key="EMAIL" text="Email"/>
+                                <option key="TELECOM_NUMBER" text="Phone"/>
+                                <option key="POSTAL_ADDRESS" text="Postal Address"/>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="infoString"><default-field title="Contact Value"><text-line/></default-field></field>
+                    <field name="createdDate"><default-field title="Created Date"><date-time/></default-field></field>
+                    <field name="submitBtn"><default-field title="Create Contact Mech"><submit/></default-field></field>
+                </form-single>
+                <form-single name="CreatePartyContactMechForm" transition="createPartyContactMech">
+                    <field name="partyId"><default-field title="Party ID"><text-line/></default-field></field>
+                    <field name="contactMechId"><default-field title="ContactMech ID"><text-line/></default-field></field>
+                    <field name="purposeEnumId">
+                        <default-field title="Purpose">
+                            <drop-down>
+                                <option key="PRIMARY_EMAIL" text="Primary Email"/>
+                                <option key="MOBILE_PHONE" text="Mobile Phone"/>
+                                <option key="WORK_PHONE" text="Work Phone"/>
+                                <option key="SHIPPING_ADDRESS" text="Shipping Address"/>
+                                <option key="BILLING_ADDRESS" text="Billing Address"/>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="fromDate"><default-field title="From Date"><date-time/></default-field></field>
+                    <field name="submitBtn"><default-field title="Link Contact"><submit/></default-field></field>
+                </form-single>
+            </box-body>
+        </container-box>
+
+        <container-box>
+            <box-header title="Party Relationships"/>
+            <box-body>
+                <form-single name="CreatePartyRelationshipForm" transition="createPartyRelationship">
+                    <field name="fromPartyId"><default-field title="From Party"><text-line/></default-field></field>
+                    <field name="toPartyId"><default-field title="To Party"><text-line/></default-field></field>
+                    <field name="relationshipTypeEnumId">
+                        <default-field title="Relationship Type">
+                            <drop-down>
+                                <option key="EMPLOYED_BY" text="Employed By"/>
+                                <option key="MEMBER_OF" text="Member Of"/>
+                                <option key="PART_OF" text="Part Of"/>
+                                <option key="STUDIES_AT" text="Studies At"/>
+                            </drop-down>
+                        </default-field>
+                    </field>
+                    <field name="fromDate"><default-field title="From Date"><date-time/></default-field></field>
+                    <field name="submitBtn"><default-field title="Create Relationship"><submit/></default-field></field>
+                </form-single>
+            </box-body>
+        </container-box>
+
+        <container-box>
+            <box-header title="Existing Parties"/>
+            <box-body>
+                <form-list name="PartyList" list="partyList" skip-form="true">
+                    <field name="partyId"><default-field title="Party ID"><display/></default-field></field>
+                    <field name="partyName"><default-field title="Name"><display/></default-field></field>
+                    <field name="partyTypeEnumId"><default-field title="Type"><display/></default-field></field>
+                    <field name="createdDate"><default-field title="Created Date"><display/></default-field></field>
+                </form-list>
+            </box-body>
+        </container-box>
+
+        <container-box>
+            <box-header title="Party Relationships"/>
+            <box-body>
+                <form-list name="PartyRelationshipList" list="partyRelationshipList" skip-form="true">
+                    <field name="fromPartyId"><default-field title="From Party"><display/></default-field></field>
+                    <field name="toPartyId"><default-field title="To Party"><display/></default-field></field>
+                    <field name="relationshipTypeEnumId"><default-field title="Type"><display/></default-field></field>
+                    <field name="fromRoleTypeId"><default-field title="From Role"><display/></default-field></field>
+                    <field name="toRoleTypeId"><default-field title="To Role"><display/></default-field></field>
+                    <field name="fromDate"><default-field title="From Date"><display/></default-field></field>
+                </form-list>
+            </box-body>
+        </container-box>
+
+        <container-box>
+            <box-header title="Party Contact Mechanisms"/>
+            <box-body>
+                <form-list name="PartyContactMechList" list="partyContactMechList" skip-form="true">
+                    <field name="partyId"><default-field title="Party ID"><display/></default-field></field>
+                    <field name="contactMechId"><default-field title="ContactMech ID"><display/></default-field></field>
+                    <field name="purposeEnumId"><default-field title="Purpose"><display/></default-field></field>
+                    <field name="fromDate"><default-field title="From Date"><display/></default-field></field>
+                </form-list>
+            </box-body>
+        </container-box>
+    </widgets>
+</screen>
