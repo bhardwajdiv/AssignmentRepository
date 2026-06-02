@@ -62,15 +62,65 @@
             package="party">
 
         <field name="contactMechId" type="id" is-pk="true"/>
-        <field name="contactMechTypeId" type="id"/>
+        <field name="contactMechTypeEnumId" type="id"/>
         <field name="infoString" type="text-medium"/>
         <field name="createdDate" type="date-time"/>
 
         <relationship type="one"
                       title="ContactMechType"
                       related="moqui.basic.Enumeration">
-            <key-map field-name="contactMechTypeId"/>
+            <key-map field-name="contactMechTypeEnumId"/>
         </relationship>
+    </entity>
+
+    <!-- ====================================================== -->
+    <!-- TelecomNumber -->
+    <!-- ====================================================== -->
+
+    <entity entity-name="TelecomNumber"
+            package="party">
+
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="countryCode" type="text-short"/>
+        <field name="areaCode" type="text-short"/>
+        <field name="contactNumber" type="text-medium"/>
+
+        <relationship type="one"
+                      related="party.ContactMech">
+            <key-map field-name="contactMechId"/>
+        </relationship>
+    </entity>
+
+    <!-- ====================================================== -->
+    <!-- PostalAddress -->
+    <!-- ====================================================== -->
+
+    <entity entity-name="PostalAddress"
+            package="party">
+
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="toName" type="text-medium"/>
+        <field name="attnName" type="text-medium"/>
+        <field name="address1" type="text-medium"/>
+        <field name="address2" type="text-medium"/>
+        <field name="city" type="text-medium"/>
+        <field name="postalCode" type="text-short"/>
+
+        <relationship type="one"
+                      related="party.ContactMech">
+            <key-map field-name="contactMechId"/>
+        </relationship>
+    </entity>
+
+    <!-- ====================================================== -->
+    <!-- ContactMechPurpose -->
+    <!-- ====================================================== -->
+
+    <entity entity-name="ContactMechPurpose"
+            package="party">
+
+        <field name="contactMechPurposeId" type="id" is-pk="true"/>
+        <field name="description" type="text-medium"/>
     </entity>
 
     <!-- ====================================================== -->
@@ -82,14 +132,24 @@
 
         <field name="partyId" type="id" is-pk="true"/>
         <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="contactMechPurposeId" type="id" is-pk="true"/>
         <field name="fromDate" type="date-time" is-pk="true"/>
         <field name="thruDate" type="date-time"/>
 
         <relationship type="one"
-                      related="party.Party"/>
+                      related="party.Party">
+            <key-map field-name="partyId"/>
+        </relationship>
 
         <relationship type="one"
-                      related="party.ContactMech"/>
+                      related="party.ContactMech">
+            <key-map field-name="contactMechId"/>
+        </relationship>
+
+        <relationship type="one"
+                      related="party.ContactMechPurpose">
+            <key-map field-name="contactMechPurposeId"/>
+        </relationship>
     </entity>
 
 </entities>

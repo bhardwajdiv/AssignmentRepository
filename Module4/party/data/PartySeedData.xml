@@ -74,15 +74,27 @@
 
     <party.ContactMech
             contactMechId="CM100"
-            contactMechTypeId="EMAIL"
+            contactMechTypeEnumId="EMAIL"
             infoString="divyansh@example.com"
             createdDate="2026-05-29 00:00:00.000"/>
 
     <party.ContactMech
             contactMechId="CM101"
-            contactMechTypeId="TELECOM_NUMBER"
+            contactMechTypeEnumId="TELECOM_NUMBER"
             infoString="+919999999999"
             createdDate="2026-05-29 00:00:00.000"/>
+
+    <!-- ====================================================== -->
+    <!-- CONTACT MECH PURPOSE -->
+    <!-- ====================================================== -->
+
+    <party.ContactMechPurpose
+            contactMechPurposeId="WORK"
+            description="Work"/>
+
+    <party.ContactMechPurpose
+            contactMechPurposeId="HOME"
+            description="Home"/>
 
     <!-- ====================================================== -->
     <!-- PARTY CONTACT MECH -->
@@ -91,11 +103,13 @@
     <party.PartyContactMech
             partyId="P100"
             contactMechId="CM100"
+            contactMechPurposeId="WORK"
             fromDate="2026-05-29 00:00:00.000"/>
 
     <party.PartyContactMech
             partyId="P100"
             contactMechId="CM101"
+            contactMechPurposeId="HOME"
             fromDate="2026-05-29 00:00:00.000"/>
 
 </entity-facade-xml>

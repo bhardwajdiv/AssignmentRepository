@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-facade-data-3.xsd">
+
+    <!-- Contact Mech Type Enumerations -->
+    <moqui.basic.Enumeration enumId="EMAIL_ADDRESS" enumTypeId="ContactMechType" description="Email Address"/>
+
+    <!-- Parties & Persons/PartyGroups referenced in the data -->
+    <party.Party partyId="PER123" partyTypeEnumId="PERSON" createdDate="2010-01-01 00:00:00.000"/>
+    <party.Person partyId="PER123" firstName="John" lastName="Doe"/>
+
+    <party.Party partyId="ORG456" partyTypeEnumId="PARTY_GROUP" createdDate="2000-01-01 00:00:00.000"/>
+    <party.PartyGroup partyId="ORG456" groupName="ABC Organization" description="ABC Org"/>
+
+    <!-- Contact Mechanisms -->
+    <party.ContactMech contactMechId="10000" contactMechTypeEnumId="TELECOM_NUMBER" createdDate="2010-01-01 00:00:00.000"/>
+    <party.TelecomNumber contactMechId="10000" countryCode="1" areaCode="123" contactNumber="4567890"/>
+
+    <party.ContactMech contactMechId="10001" contactMechTypeEnumId="EMAIL_ADDRESS" infoString="example@email.com" createdDate="2010-01-01 00:00:00.000"/>
+
+    <party.ContactMech contactMechId="10002" contactMechTypeEnumId="POSTAL_ADDRESS" createdDate="2010-01-01 00:00:00.000"/>
+    <party.PostalAddress contactMechId="10002" toName="John Doe" attnName="Office" address1="123 Main St" address2="Suite 100" city="Metropolis" postalCode="12345"/>
+
+    <party.ContactMech contactMechId="10003" contactMechTypeEnumId="POSTAL_ADDRESS" createdDate="2005-01-01 00:00:00.000"/>
+    <party.PostalAddress contactMechId="10003" toName="John Doe" attnName="Home" address1="123 Local St" city="Metropolis" postalCode="12345"/>
+
+    <party.ContactMech contactMechId="10004" contactMechTypeEnumId="POSTAL_ADDRESS" createdDate="2010-01-01 00:00:00.000"/>
+    <party.PostalAddress contactMechId="10004" toName="SoHo Store" attnName="Home" address1="123 Broome St" city="New York" postalCode="10012"/>
+
+    <!-- Contact Mech Purposes -->
+    <party.ContactMechPurpose contactMechPurposeId="WORK" description="Work"/>
+    <party.ContactMechPurpose contactMechPurposeId="HOME" description="Home"/>
+    <party.ContactMechPurpose contactMechPurposeId="OFFICE" description="Office"/>
+
+    <!-- Party Contact Mechanism Associations -->
+    <party.PartyContactMech partyId="PER123" contactMechId="10000" contactMechPurposeId="WORK" fromDate="2010-01-01 00:00:00.000"/>
+    <party.PartyContactMech partyId="PER123" contactMechId="10001" contactMechPurposeId="WORK" fromDate="2010-01-01 00:00:00.000"/>
+    <party.PartyContactMech partyId="PER123" contactMechId="10002" contactMechPurposeId="WORK" fromDate="2010-01-01 00:00:00.000"/>
+    <party.PartyContactMech partyId="PER123" contactMechId="10003" contactMechPurposeId="HOME" fromDate="2005-01-01 00:00:00.000"/>
+    <party.PartyContactMech partyId="ORG456" contactMechId="10000" contactMechPurposeId="OFFICE" fromDate="2010-01-01 00:00:00.000"/>
+    <party.PartyContactMech partyId="ORG456" contactMechId="10002" contactMechPurposeId="OFFICE" fromDate="2000-01-01 00:00:00.000"/>
+
+</entity-facade-data>

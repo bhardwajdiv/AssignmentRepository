@@ -6,5 +6,7 @@
 
     <entity-facade-xml type="seed"
                        location="data/PartySeedData.xml"/>
+    <entity-facade-xml type="seed"
+                       location="data/ContactMechData.xml"/>
 
 </component>
