@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all">
+
+    <!-- ============================================================ -->
+    <!-- TRANSITIONS                                                   -->
+    <!-- ============================================================ -->
+    <transition name="createProduct">
+        <actions>
+            <service-call name="create#productinformationmgr_v2.Product" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <!-- ============================================================ -->
+    <!-- ACTIONS  (runs before rendering)                             -->
+    <!-- ============================================================ -->
+    <actions>
+        <entity-find entity-name="productinformationmgr_v2.Product" list="productList">
+            <search-form-inputs/>
+            <order-by field-name="productId"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="productTypeList">
+            <econdition field-name="enumTypeId" value="ProductType"/>
+        </entity-find>
+    </actions>
+
+    <!-- ============================================================ -->
+    <!-- WIDGETS                                                      -->
+    <!-- ============================================================ -->
+    <widgets>
+        <container-row>
+            <row-col md="12">
+                <container-box>
+                    <box-header title="Products"/>
+                    <box-toolbar>
+                        <container-dialog id="CreateProductDialog" button-text="Create Product">
+                            <form-single name="CreateProductForm" transition="createProduct">
+                                <field name="productId">
+                                    <default-field title="Product ID"><text-line size="20"/></default-field>
+                                </field>
+                                <field name="productName">
+                                    <default-field title="Product Name"><text-line size="40"/></default-field>
+                                </field>
+                                <field name="productTypeEnumId">
+                                    <default-field title="Product Type">
+                                        <drop-down>
+                                            <list-options list="productTypeList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="isVirtual">
+                                    <default-field title="Is Virtual?">
+                                        <drop-down>
+                                            <option key="Y" text="Yes"/>
+                                            <option key="N" text="No"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="isVariant">
+                                    <default-field title="Is Variant?">
+                                        <drop-down>
+                                            <option key="Y" text="Yes"/>
+                                            <option key="N" text="No"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="description">
+                                    <default-field title="Description"><text-area cols="40" rows="3"/></default-field>
+                                </field>
+                                <field name="submitBtn">
+                                    <default-field title="Create"><submit/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ProductList" list="productList" skip-form="true">
+                            <field name="productId">
+                                <header-field show-order-by="true"/>
+                                <default-field title="Product ID">
+                                    <link url="../productDetail" text="${productId}">
+                                        <parameter name="productId" from="productId"/>
+                                    </link>
+                                </default-field>
+                            </field>
+                            <field name="productName">
+                                <header-field show-order-by="true"><text-find/></header-field>
+                                <default-field title="Name"><display/></default-field>
+                            </field>
+                            <field name="productTypeEnumId">
+                                <header-field/>
+                                <default-field title="Type">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                   key-field-name="enumId"
+                                                   text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="isVirtual">
+                                <header-field/>
+                                <default-field title="Virtual?"><display/></default-field>
+                            </field>
+                            <field name="isVariant">
+                                <header-field/>
+                                <default-field title="Variant?"><display/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+    </widgets>
+
+</screen>

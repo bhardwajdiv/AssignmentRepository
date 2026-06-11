@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all">
+
+    <parameter name="productId" required="true"/>
+
+    <!-- ============================================================ -->
+    <!-- TRANSITIONS                                                   -->
+    <!-- ============================================================ -->
+    <transition name="updateProduct">
+        <actions><service-call name="update#productinformationmgr_v2.Product" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+    <transition name="createPrice">
+        <actions><service-call name="create#productinformationmgr_v2.ProductPrice" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+    <transition name="createContent">
+        <actions><service-call name="create#productinformationmgr_v2.ProductContent" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+    <transition name="createDimension">
+        <actions><service-call name="create#productinformationmgr_v2.ProductDimension" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+    <transition name="createAssoc">
+        <actions><service-call name="create#productinformationmgr_v2.ProductAssoc" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+    <transition name="createFeatureAppl">
+        <actions><service-call name="create#productinformationmgr_v2.ProductFeatureAppl" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+    <transition name="createCategoryMember">
+        <actions><service-call name="create#productinformationmgr_v2.ProductCategoryMember" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+    <transition name="createProductTopic">
+        <actions><service-call name="create#productinformationmgr_v2.ProductTopic" in-map="true"/></actions>
+        <default-response url="."/>
+    </transition>
+
+    <!-- ============================================================ -->
+    <!-- ACTIONS                                                      -->
+    <!-- ============================================================ -->
+    <actions>
+        <entity-find-one entity-name="productinformationmgr_v2.Product" value-field="product"/>
+
+        <entity-find entity-name="productinformationmgr_v2.ProductPrice" list="priceList">
+            <econdition field-name="productId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductContent" list="contentList">
+            <econdition field-name="productId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductDimension" list="dimensionList">
+            <econdition field-name="productId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductAssoc" list="assocList">
+            <econdition field-name="productId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeatureAppl" list="featureApplList">
+            <econdition field-name="productId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductCategoryMember" list="categoryMemberList">
+            <econdition field-name="productId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductTopic" list="productTopicList">
+            <econdition field-name="productId"/>
+        </entity-find>
+
+        <!-- Dropdown data -->
+        <entity-find entity-name="moqui.basic.Enumeration" list="productTypeList">
+            <econdition field-name="enumTypeId" value="ProductType"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="priceTypeList">
+            <econdition field-name="enumTypeId" value="PriceType"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="contentTypeList">
+            <econdition field-name="enumTypeId" value="ProductContentType"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="dimensionTypeList">
+            <econdition field-name="enumTypeId" value="DimensionType"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="assocTypeList">
+            <econdition field-name="enumTypeId" value="ProductAssocType"/>
+        </entity-find>
+        <entity-find entity-name="moqui.basic.Enumeration" list="featureApplTypeList">
+            <econdition field-name="enumTypeId" value="ProductFeatureApplType"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeature"  list="allFeatures"/>
+        <entity-find entity-name="productinformationmgr_v2.Product"         list="allProducts"/>
+        <entity-find entity-name="productinformationmgr_v2.ProductCategory" list="allCategories"/>
+        <entity-find entity-name="productinformationmgr_v2.Topic"           list="allTopics"/>
+    </actions>
+
+    <!-- ============================================================ -->
+    <!-- WIDGETS                                                      -->
+    <!-- ============================================================ -->
+    <widgets>
+        <container>
+            <link url="../products" text="Back to Products" link-type="anchor"/>
+        </container>
+
+        <container-row>
+
+            <!-- ================================================== -->
+            <!-- COL 1: Basic Info + Dimensions                      -->
+            <!-- ================================================== -->
+            <row-col md="4">
+
+                <container-box>
+                    <box-header title="Product Info"/>
+                    <box-body>
+                        <form-single name="EditProductForm" transition="updateProduct" map="product">
+                            <field name="productId">
+                                <default-field title="Product ID"><display/></default-field>
+                            </field>
+                            <field name="productName">
+                                <default-field title="Name"><text-line size="30"/></default-field>
+                            </field>
+                            <field name="productTypeEnumId">
+                                <default-field title="Type">
+                                    <drop-down>
+                                        <list-options list="productTypeList" key="${enumId}" text="${description}"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="isVirtual">
+                                <default-field title="Virtual?">
+                                    <drop-down>
+                                        <option key="Y" text="Yes"/>
+                                        <option key="N" text="No"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="isVariant">
+                                <default-field title="Variant?">
+                                    <drop-down>
+                                        <option key="Y" text="Yes"/>
+                                        <option key="N" text="No"/>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="description">
+                                <default-field title="Description"><text-area cols="30" rows="3"/></default-field>
+                            </field>
+                            <field name="submitBtn">
+                                <default-field title="Save"><submit/></default-field>
+                            </field>
+                        </form-single>
+                    </box-body>
+                </container-box>
+
+                <container-box>
+                    <box-header title="Dimensions"/>
+                    <box-toolbar>
+                        <container-dialog id="AddDimensionDialog" button-text="Add Dimension">
+                            <form-single name="AddDimensionForm" transition="createDimension">
+                                <field name="productId"><default-field><hidden/></default-field></field>
+                                <field name="dimensionTypeEnumId">
+                                    <default-field title="Type">
+                                        <drop-down>
+                                            <list-options list="dimensionTypeList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="dimensionValue">
+                                    <default-field title="Value"><text-line size="10"/></default-field>
+                                </field>
+                                <field name="valueUomId">
+                                    <default-field title="Unit (e.g. LBS, OUNCES)"><text-line size="10"/></default-field>
+                                </field>
+                                <field name="submitBtn"><default-field title="Add"><submit/></default-field></field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="DimensionList" list="dimensionList" skip-form="true">
+                            <field name="dimensionTypeEnumId">
+                                <default-field title="Type">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                   key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="dimensionValue">
+                                <default-field title="Value"><display/></default-field>
+                            </field>
+                            <field name="valueUomId">
+                                <default-field title="Unit"><display/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+
+            </row-col>
+
+            <!-- ================================================== -->
+            <!-- COL 2: Prices + Content + Associations              -->
+            <!-- ================================================== -->
+            <row-col md="4">
+
+                <container-box>
+                    <box-header title="Prices"/>
+                    <box-toolbar>
+                        <container-dialog id="AddPriceDialog" button-text="Add Price">
+                            <form-single name="AddPriceForm" transition="createPrice">
+                                <field name="productPriceId">
+                                    <default-field title="Price ID"><text-line size="20"/></default-field>
+                                </field>
+                                <field name="productId"><default-field><hidden/></default-field></field>
+                                <field name="priceTypeEnumId">
+                                    <default-field title="Type">
+                                        <drop-down>
+                                            <list-options list="priceTypeList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="price">
+                                    <default-field title="Price"><text-line size="10"/></default-field>
+                                </field>
+                                <field name="submitBtn"><default-field title="Add"><submit/></default-field></field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="PriceList" list="priceList" skip-form="true">
+                            <field name="priceTypeEnumId">
+                                <default-field title="Type">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                   key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="price">
+                                <default-field title="Price"><display format="0.00"/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+
+                <container-box>
+                    <box-header title="Content Assets"/>
+                    <box-toolbar>
+                        <container-dialog id="AddContentDialog" button-text="Add Content">
+                            <form-single name="AddContentForm" transition="createContent">
+                                <field name="productContentId">
+                                    <default-field title="Content ID"><text-line size="20"/></default-field>
+                                </field>
+                                <field name="productId"><default-field><hidden/></default-field></field>
+                                <field name="productContentTypeEnumId">
+                                    <default-field title="Type">
+                                        <drop-down>
+                                            <list-options list="contentTypeList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="contentLocation">
+                                    <default-field title="Path / URL"><text-line size="40"/></default-field>
+                                </field>
+                                <field name="submitBtn"><default-field title="Add"><submit/></default-field></field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ContentList" list="contentList" skip-form="true">
+                            <field name="productContentTypeEnumId">
+                                <default-field title="Type">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                   key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="contentLocation">
+                                <default-field title="Location"><display/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+
+                <container-box>
+                    <box-header title="Associations"/>
+                    <box-toolbar>
+                        <container-dialog id="AddAssocDialog" button-text="Add Association">
+                            <form-single name="AddAssocForm" transition="createAssoc">
+                                <field name="productId"><default-field><hidden/></default-field></field>
+                                <field name="toProductId">
+                                    <default-field title="To Product">
+                                        <drop-down>
+                                            <list-options list="allProducts" key="${productId}" text="${productId} - ${productName}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="productAssocTypeEnumId">
+                                    <default-field title="Type">
+                                        <drop-down>
+                                            <list-options list="assocTypeList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="fromDate">
+                                    <default-field title="From Date"><date-time type="date-time"/></default-field>
+                                </field>
+                                <field name="submitBtn"><default-field title="Add"><submit/></default-field></field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="AssocList" list="assocList" skip-form="true">
+                            <field name="toProductId">
+                                <default-field title="To Product">
+                                    <display-entity entity-name="productinformationmgr_v2.Product"
+                                                   key-field-name="productId"
+                                                   text="${productId} - ${productName}"/>
+                                </default-field>
+                            </field>
+                            <field name="productAssocTypeEnumId">
+                                <default-field title="Type">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                   key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="fromDate">
+                                <default-field title="From"><display format="yyyy-MM-dd"/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+
+            </row-col>
+
+            <!-- ================================================== -->
+            <!-- COL 3: Features + Categories + Topics               -->
+            <!-- ================================================== -->
+            <row-col md="4">
+
+                <container-box>
+                    <box-header title="Applied Features"/>
+                    <box-toolbar>
+                        <container-dialog id="AddFeatureApplDialog" button-text="Apply Feature">
+                            <form-single name="AddFeatureApplForm" transition="createFeatureAppl">
+                                <field name="productId"><default-field><hidden/></default-field></field>
+                                <field name="productFeatureId">
+                                    <default-field title="Feature">
+                                        <drop-down>
+                                            <list-options list="allFeatures" key="${productFeatureId}"
+                                                          text="${productFeatureTypeId} — ${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="productFeatureApplTypeEnumId">
+                                    <default-field title="Application Type">
+                                        <drop-down>
+                                            <list-options list="featureApplTypeList" key="${enumId}" text="${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="fromDate">
+                                    <default-field title="From Date"><date-time type="date-time"/></default-field>
+                                </field>
+                                <field name="submitBtn"><default-field title="Apply"><submit/></default-field></field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="FeatureApplList" list="featureApplList" skip-form="true">
+                            <field name="productFeatureId">
+                                <default-field title="Feature">
+                                    <display-entity entity-name="productinformationmgr_v2.ProductFeature"
+                                                   key-field-name="productFeatureId"
+                                                   text="${productFeatureTypeId} — ${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="productFeatureApplTypeEnumId">
+                                <default-field title="App Type">
+                                    <display-entity entity-name="moqui.basic.Enumeration"
+                                                   key-field-name="enumId" text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="fromDate">
+                                <default-field title="From"><display format="yyyy-MM-dd"/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+
+                <container-box>
+                    <box-header title="Category Membership"/>
+                    <box-toolbar>
+                        <container-dialog id="AddCategoryDialog" button-text="Add to Category">
+                            <form-single name="AddCategoryForm" transition="createCategoryMember">
+                                <field name="productId"><default-field><hidden/></default-field></field>
+                                <field name="productCategoryId">
+                                    <default-field title="Category">
+                                        <drop-down>
+                                            <list-options list="allCategories" key="${productCategoryId}" text="${categoryName}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="fromDate">
+                                    <default-field title="From Date"><date-time type="date-time"/></default-field>
+                                </field>
+                                <field name="submitBtn"><default-field title="Add"><submit/></default-field></field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="CategoryMemberList" list="categoryMemberList" skip-form="true">
+                            <field name="productCategoryId">
+                                <default-field title="Category">
+                                    <display-entity entity-name="productinformationmgr_v2.ProductCategory"
+                                                   key-field-name="productCategoryId" text="${categoryName}"/>
+                                </default-field>
+                            </field>
+                            <field name="fromDate">
+                                <default-field title="From"><display format="yyyy-MM-dd"/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+
+                <container-box>
+                    <box-header title="Taxonomy Topics"/>
+                    <box-toolbar>
+                        <container-dialog id="AddTopicDialog" button-text="Assign Topic">
+                            <form-single name="AddTopicForm" transition="createProductTopic">
+                                <field name="productId"><default-field><hidden/></default-field></field>
+                                <field name="topicId">
+                                    <default-field title="Topic">
+                                        <drop-down>
+                                            <list-options list="allTopics" key="${topicId}" text="${name} (${typeEnumId})"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="fromDate">
+                                    <default-field title="From Date"><date-time type="date-time"/></default-field>
+                                </field>
+                                <field name="submitBtn"><default-field title="Assign"><submit/></default-field></field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="ProductTopicList" list="productTopicList" skip-form="true">
+                            <field name="topicId">
+                                <default-field title="Topic">
+                                    <display-entity entity-name="productinformationmgr_v2.Topic"
+                                                   key-field-name="topicId" text="${name}"/>
+                                </default-field>
+                            </field>
+                            <field name="fromDate">
+                                <default-field title="From"><display format="yyyy-MM-dd"/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+
+            </row-col>
+
+        </container-row>
+    </widgets>
+
+</screen>

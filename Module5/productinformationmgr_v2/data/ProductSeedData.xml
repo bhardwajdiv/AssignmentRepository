@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-facade-data-3.xsd">
+
+    <!-- ============================================================ -->
+    <!-- ENUMERATION TYPES                                            -->
+    <!-- ============================================================ -->
+    <moqui.basic.EnumerationType enumTypeId="ProductType"            description="Product Type"/>
+    <moqui.basic.EnumerationType enumTypeId="ProductContentType"     description="Product Content Type"/>
+    <moqui.basic.EnumerationType enumTypeId="PriceType"              description="Price Type"/>
+    <moqui.basic.EnumerationType enumTypeId="DimensionType"          description="Dimension Type"/>
+    <moqui.basic.EnumerationType enumTypeId="ProductAssocType"       description="Product Association Type"/>
+    <moqui.basic.EnumerationType enumTypeId="ProductFeatureApplType" description="Product Feature Application Type"/>
+    <moqui.basic.EnumerationType enumTypeId="TopicType"              description="Taxonomy Topic Type"/>
+
+    <!-- ============================================================ -->
+    <!-- ENUMERATION VALUES                                           -->
+    <!-- ============================================================ -->
+    <!-- Product Types -->
+    <moqui.basic.Enumeration enumId="FINISHED_GOOD"   enumTypeId="ProductType" description="Finished Good"/>
+    <moqui.basic.Enumeration enumId="RAW_MATERIAL"    enumTypeId="ProductType" description="Raw Material"/>
+    <moqui.basic.Enumeration enumId="SERVICE"         enumTypeId="ProductType" description="Service"/>
+
+    <!-- Product Content Types -->
+    <moqui.basic.Enumeration enumId="IMAGE"           enumTypeId="ProductContentType" description="Image"/>
+    <moqui.basic.Enumeration enumId="DESCRIPTION"     enumTypeId="ProductContentType" description="Description"/>
+    <moqui.basic.Enumeration enumId="SPECIFICATIONS"  enumTypeId="ProductContentType" description="Specifications"/>
+    <moqui.basic.Enumeration enumId="WARRANTY"        enumTypeId="ProductContentType" description="Warranty"/>
+
+    <!-- Price Types -->
+    <moqui.basic.Enumeration enumId="LIST_PRICE"        enumTypeId="PriceType" description="List Price"/>
+    <moqui.basic.Enumeration enumId="PROMOTIONAL_PRICE" enumTypeId="PriceType" description="Promotional Price"/>
+    <moqui.basic.Enumeration enumId="WHOLESALE_PRICE"   enumTypeId="PriceType" description="Wholesale Price"/>
+    <moqui.basic.Enumeration enumId="COST_PRICE"        enumTypeId="PriceType" description="Cost Price"/>
+
+    <!-- Dimension Types -->
+    <moqui.basic.Enumeration enumId="WEIGHT" enumTypeId="DimensionType" description="Weight"/>
+    <moqui.basic.Enumeration enumId="LENGTH" enumTypeId="DimensionType" description="Length"/>
+    <moqui.basic.Enumeration enumId="WIDTH"  enumTypeId="DimensionType" description="Width"/>
+    <moqui.basic.Enumeration enumId="HEIGHT" enumTypeId="DimensionType" description="Height"/>
+
+    <!-- Product Association Types -->
+    <moqui.basic.Enumeration enumId="VARIANT"    enumTypeId="ProductAssocType" description="Variant"/>
+    <moqui.basic.Enumeration enumId="COMPONENT"  enumTypeId="ProductAssocType" description="Component"/>
+    <moqui.basic.Enumeration enumId="UPSELL"     enumTypeId="ProductAssocType" description="Up Sell"/>
+    <moqui.basic.Enumeration enumId="CROSS_SELL" enumTypeId="ProductAssocType" description="Cross Sell"/>
+    <moqui.basic.Enumeration enumId="ACCESSORY"  enumTypeId="ProductAssocType" description="Accessory"/>
+
+    <!-- Feature Application Types -->
+    <moqui.basic.Enumeration enumId="STANDARD_FEATURE"   enumTypeId="ProductFeatureApplType" description="Standard Feature"/>
+    <moqui.basic.Enumeration enumId="SELECTABLE_FEATURE" enumTypeId="ProductFeatureApplType" description="Selectable Feature"/>
+
+    <!-- Taxonomy Topic Types -->
+    <moqui.basic.Enumeration enumId="TAXON_CATEGORY"    enumTypeId="TopicType" description="Category"/>
+    <moqui.basic.Enumeration enumId="TAXON_SUBCATEGORY" enumTypeId="TopicType" description="Sub-Category"/>
+    <moqui.basic.Enumeration enumId="TAXON_TOPIC"       enumTypeId="TopicType" description="Topic"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT FEATURE TYPES  (custom type table)                   -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductFeatureType productFeatureTypeId="COLOR"   description="Color"/>
+    <productinformationmgr_v2.ProductFeatureType productFeatureTypeId="STORAGE" description="Storage Capacity"/>
+    <productinformationmgr_v2.ProductFeatureType productFeatureTypeId="NETWORK" description="Network Connectivity"/>
+    <productinformationmgr_v2.ProductFeatureType productFeatureTypeId="COMPUTE" description="Compute / CPU"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT FEATURES                                             -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductFeature productFeatureId="COLOR_BLACK"  productFeatureTypeId="COLOR"   description="Black"/>
+    <productinformationmgr_v2.ProductFeature productFeatureId="COLOR_SILVER" productFeatureTypeId="COLOR"   description="Silver"/>
+    <productinformationmgr_v2.ProductFeature productFeatureId="STRG_128GB"   productFeatureTypeId="STORAGE" description="128 GB"/>
+    <productinformationmgr_v2.ProductFeature productFeatureId="STRG_256GB"   productFeatureTypeId="STORAGE" description="256 GB"/>
+    <productinformationmgr_v2.ProductFeature productFeatureId="STRG_512GB"   productFeatureTypeId="STORAGE" description="512 GB SSD"/>
+    <productinformationmgr_v2.ProductFeature productFeatureId="NET_5G"       productFeatureTypeId="NETWORK" description="5G"/>
+    <productinformationmgr_v2.ProductFeature productFeatureId="NET_WIFI6"    productFeatureTypeId="NETWORK" description="Wi-Fi 6"/>
+    <productinformationmgr_v2.ProductFeature productFeatureId="CPU_I7"       productFeatureTypeId="COMPUTE" description="Intel Core i7"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT FEATURE CATEGORIES                                   -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductFeatureCategory productFeatureCategoryId="FEATCAT_STORAGE"     categoryName="Storage"      sequenceNum="1"/>
+    <productinformationmgr_v2.ProductFeatureCategory productFeatureCategoryId="FEATCAT_COLOR"       categoryName="Color"        sequenceNum="2"/>
+    <productinformationmgr_v2.ProductFeatureCategory productFeatureCategoryId="FEATCAT_CONNECTIVITY" categoryName="Connectivity" sequenceNum="3"/>
+    <productinformationmgr_v2.ProductFeatureCategory productFeatureCategoryId="FEATCAT_PERFORMANCE" categoryName="Performance"  sequenceNum="4"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT FEATURE GROUPS  (Feature → FeatureCategory)          -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="STRG_128GB"  productFeatureCategoryId="FEATCAT_STORAGE"/>
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="STRG_256GB"  productFeatureCategoryId="FEATCAT_STORAGE"/>
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="STRG_512GB"  productFeatureCategoryId="FEATCAT_STORAGE"/>
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="COLOR_BLACK" productFeatureCategoryId="FEATCAT_COLOR"/>
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="COLOR_SILVER" productFeatureCategoryId="FEATCAT_COLOR"/>
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="NET_5G"      productFeatureCategoryId="FEATCAT_CONNECTIVITY"/>
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="NET_WIFI6"   productFeatureCategoryId="FEATCAT_CONNECTIVITY"/>
+    <productinformationmgr_v2.ProductFeatureGroup productFeatureId="CPU_I7"      productFeatureCategoryId="FEATCAT_PERFORMANCE"/>
+
+    <!-- ============================================================ -->
+    <!-- TAXONOMY TOPICS                                              -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.Topic topicId="T_ELECTRONICS"  name="Electronics"         typeEnumId="TAXON_CATEGORY"    score="9.5"/>
+    <productinformationmgr_v2.Topic topicId="T_MOBILE"       name="Mobile Devices"      typeEnumId="TAXON_SUBCATEGORY" parentId="T_ELECTRONICS" score="9.2"/>
+    <productinformationmgr_v2.Topic topicId="T_COMPUTING"    name="Computing"           typeEnumId="TAXON_SUBCATEGORY" parentId="T_ELECTRONICS" score="8.9"/>
+    <productinformationmgr_v2.Topic topicId="T_SMARTPHONES"  name="Smartphones"         typeEnumId="TAXON_TOPIC"       parentId="T_MOBILE"      score="9.8"/>
+    <productinformationmgr_v2.Topic topicId="T_LAPTOPS"      name="Laptops"             typeEnumId="TAXON_TOPIC"       parentId="T_COMPUTING"   score="9.1"/>
+    <productinformationmgr_v2.Topic topicId="T_BUNDLES"      name="Bundles &amp; Deals" typeEnumId="TAXON_TOPIC"       parentId="T_ELECTRONICS" score="7.5"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT CATEGORIES                                           -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductCategory productCategoryId="CAT_ELECTRONICS" categoryName="Electronics"       sequenceNum="1"/>
+    <productinformationmgr_v2.ProductCategory productCategoryId="CAT_MOBILE"      categoryName="Mobile Devices"    parentCategoryId="CAT_ELECTRONICS" sequenceNum="1"/>
+    <productinformationmgr_v2.ProductCategory productCategoryId="CAT_COMPUTING"   categoryName="Computing"         parentCategoryId="CAT_ELECTRONICS" sequenceNum="2"/>
+    <productinformationmgr_v2.ProductCategory productCategoryId="CAT_BUNDLES"     categoryName="Bundles &amp; Packages" sequenceNum="2"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCTS                                                     -->
+    <!-- ============================================================ -->
+    <!-- Smartphone — Virtual (parent, no inventory) -->
+    <productinformationmgr_v2.Product productId="PROD10000" productName="Smartphone"
+        productTypeEnumId="FINISHED_GOOD" isVirtual="Y" isVariant="N"
+        description="High-performance smartphone with multiple storage options"/>
+
+    <!-- Smartphone variants (actual sellable products) -->
+    <productinformationmgr_v2.Product productId="PROD10001" productName="Smartphone-128GB"
+        productTypeEnumId="FINISHED_GOOD" isVirtual="N" isVariant="Y"
+        description="Smartphone with 128GB storage"/>
+
+    <productinformationmgr_v2.Product productId="PROD10002" productName="Smartphone-256GB"
+        productTypeEnumId="FINISHED_GOOD" isVirtual="N" isVariant="Y"
+        description="Smartphone with 256GB storage"/>
+
+    <!-- Laptop — Virtual -->
+    <productinformationmgr_v2.Product productId="PROD20000" productName="Laptop"
+        productTypeEnumId="FINISHED_GOOD" isVirtual="Y" isVariant="N"
+        fromDate="2023-09-01 00:00:00.000"
+        description="Professional laptop for business and development"/>
+
+    <!-- Laptop variant -->
+    <productinformationmgr_v2.Product productId="PROD20001" productName="Laptop-BLACK"
+        productTypeEnumId="FINISHED_GOOD" isVirtual="N" isVariant="Y"
+        description="Professional laptop in Black"/>
+
+    <!-- Promotional bundle -->
+    <productinformationmgr_v2.Product productId="PROM001" productName="Laptop-Phone-Promotional-Package"
+        productTypeEnumId="FINISHED_GOOD" isVirtual="Y" isVariant="N"
+        description="Special promotional bundle: Smartphone + Laptop"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT CONTENT                                              -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductContent productContentId="CON100" productId="PROD10000"
+        productContentTypeEnumId="IMAGE"       contentLocation="/images/smartphone.jpg"/>
+    <productinformationmgr_v2.ProductContent productContentId="CON101" productId="PROD10000"
+        productContentTypeEnumId="DESCRIPTION" contentLocation="/descriptions/smartphone_en.txt"/>
+    <productinformationmgr_v2.ProductContent productContentId="CON300" productId="PROD20000"
+        productContentTypeEnumId="IMAGE"       contentLocation="/images/laptop.jpg"/>
+    <productinformationmgr_v2.ProductContent productContentId="CON301" productId="PROD20000"
+        productContentTypeEnumId="DESCRIPTION" contentLocation="/descriptions/laptop_en.txt"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT PRICES                                               -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductPrice productPriceId="PRC_PHN1"         productId="PROD10001" priceTypeEnumId="LIST_PRICE"        price="799.99"/>
+    <productinformationmgr_v2.ProductPrice productPriceId="PRC_PHN2"         productId="PROD10002" priceTypeEnumId="LIST_PRICE"        price="1099.99"/>
+    <productinformationmgr_v2.ProductPrice productPriceId="PRC_PHN2_PROM"    productId="PROD10002" priceTypeEnumId="PROMOTIONAL_PRICE" price="999.99"/>
+    <productinformationmgr_v2.ProductPrice productPriceId="PRC_LPT1"         productId="PROD20001" priceTypeEnumId="LIST_PRICE"        price="1299.99"/>
+    <productinformationmgr_v2.ProductPrice productPriceId="PRC_BUNDLE_PROM1" productId="PROM001"   priceTypeEnumId="PROMOTIONAL_PRICE" price="1999.99"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT DIMENSIONS                                           -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductDimension productId="PROD10000" dimensionTypeEnumId="WEIGHT" dimensionValue="6.60" valueUomId="OUNCES"/>
+    <productinformationmgr_v2.ProductDimension productId="PROD10001" dimensionTypeEnumId="WEIGHT" dimensionValue="2.5"  valueUomId="LBS"/>
+    <productinformationmgr_v2.ProductDimension productId="PROD20000" dimensionTypeEnumId="WEIGHT" dimensionValue="3.7"  valueUomId="LBS"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT ASSOCIATIONS                                         -->
+    <!-- ============================================================ -->
+    <!-- Virtual → Variant links -->
+    <productinformationmgr_v2.ProductAssoc productId="PROD10000" toProductId="PROD10001" productAssocTypeEnumId="VARIANT"   fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductAssoc productId="PROD10000" toProductId="PROD10002" productAssocTypeEnumId="VARIANT"   fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductAssoc productId="PROD20000" toProductId="PROD20001" productAssocTypeEnumId="VARIANT"   fromDate="2023-09-01 00:00:00.000"/>
+    <!-- Bundle → component links -->
+    <productinformationmgr_v2.ProductAssoc productId="PROM001"   toProductId="PROD10001" productAssocTypeEnumId="COMPONENT" fromDate="2023-10-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductAssoc productId="PROM001"   toProductId="PROD20001" productAssocTypeEnumId="COMPONENT" fromDate="2023-10-01 00:00:00.000"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT FEATURE APPLICATIONS                                 -->
+    <!-- ============================================================ -->
+    <!-- Virtual smartphone: SELECTABLE features (buyer picks one) -->
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD10000" productFeatureId="STRG_128GB" productFeatureApplTypeEnumId="SELECTABLE_FEATURE" fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD10000" productFeatureId="STRG_256GB" productFeatureApplTypeEnumId="SELECTABLE_FEATURE" fromDate="2023-01-01 00:00:00.000"/>
+    <!-- Variant 128GB: STANDARD feature (always included) -->
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD10001" productFeatureId="STRG_128GB"  productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD10001" productFeatureId="NET_5G"      productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-01-01 00:00:00.000"/>
+    <!-- Variant 256GB -->
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD10002" productFeatureId="STRG_256GB"  productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD10002" productFeatureId="NET_5G"      productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-01-01 00:00:00.000"/>
+    <!-- Laptop Black -->
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD20001" productFeatureId="COLOR_BLACK" productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-09-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD20001" productFeatureId="STRG_512GB"  productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-09-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD20001" productFeatureId="CPU_I7"      productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-09-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductFeatureAppl productId="PROD20001" productFeatureId="NET_WIFI6"   productFeatureApplTypeEnumId="STANDARD_FEATURE"   fromDate="2023-09-01 00:00:00.000"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT CATEGORY MEMBERS                                     -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductCategoryMember productId="PROD10000" productCategoryId="CAT_MOBILE"    fromDate="2023-01-01 00:00:00.000" sequenceNum="1"/>
+    <productinformationmgr_v2.ProductCategoryMember productId="PROD10001" productCategoryId="CAT_MOBILE"    fromDate="2023-01-01 00:00:00.000" sequenceNum="2"/>
+    <productinformationmgr_v2.ProductCategoryMember productId="PROD10002" productCategoryId="CAT_MOBILE"    fromDate="2023-01-01 00:00:00.000" sequenceNum="3"/>
+    <productinformationmgr_v2.ProductCategoryMember productId="PROD20000" productCategoryId="CAT_COMPUTING" fromDate="2023-09-01 00:00:00.000" sequenceNum="1"/>
+    <productinformationmgr_v2.ProductCategoryMember productId="PROD20001" productCategoryId="CAT_COMPUTING" fromDate="2023-09-01 00:00:00.000" sequenceNum="2"/>
+    <productinformationmgr_v2.ProductCategoryMember productId="PROM001"   productCategoryId="CAT_BUNDLES"   fromDate="2023-10-01 00:00:00.000" sequenceNum="1"/>
+
+    <!-- ============================================================ -->
+    <!-- PRODUCT TOPIC ASSOCIATIONS                                   -->
+    <!-- ============================================================ -->
+    <productinformationmgr_v2.ProductTopic productId="PROD10000" topicId="T_SMARTPHONES" fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductTopic productId="PROD10001" topicId="T_SMARTPHONES" fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductTopic productId="PROD10002" topicId="T_SMARTPHONES" fromDate="2023-01-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductTopic productId="PROD20000" topicId="T_LAPTOPS"     fromDate="2023-09-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductTopic productId="PROD20001" topicId="T_LAPTOPS"     fromDate="2023-09-01 00:00:00.000"/>
+    <productinformationmgr_v2.ProductTopic productId="PROM001"   topicId="T_BUNDLES"     fromDate="2023-10-01 00:00:00.000"/>
+
+</entity-facade-data>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
+
+    <!-- ============================================================ -->
+    <!-- 1. Product                                                    -->
+    <!-- ============================================================ -->
+    <entity entity-name="Product"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productId"           type="id"             is-pk="true"/>
+        <field name="productName"         type="text-medium"/>
+        <field name="productTypeEnumId"   type="id"/>
+        <field name="description"         type="text-very-long"/>
+        <field name="isVirtual"           type="text-indicator" default="N"/>
+        <field name="isVariant"           type="text-indicator" default="N"/>
+        <field name="fromDate"            type="date-time"/>
+        <field name="thruDate"            type="date-time"/>
+
+        <relationship type="one" title="ProductType" related="moqui.basic.Enumeration">
+            <key-map field-name="productTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 2. ProductContent                                            -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductContent"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_CONTENT"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productContentId"         type="id"        is-pk="true"/>
+        <field name="productId"                type="id"/>
+        <field name="productContentTypeEnumId" type="id"/>
+        <field name="contentLocation"          type="text-long"/>
+        <field name="fromDate"                 type="date-time"/>
+        <field name="thruDate"                 type="date-time"/>
+
+        <relationship type="one" related="productinformationmgr_v2.Product"/>
+        <relationship type="one" title="ProductContentType" related="moqui.basic.Enumeration">
+            <key-map field-name="productContentTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 3. ProductPrice                                              -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductPrice"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_PRICE"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productPriceId"   type="id"               is-pk="true"/>
+        <field name="productId"        type="id"/>
+        <field name="priceTypeEnumId"  type="id"/>
+        <field name="price"            type="currency-precise"/>
+        <field name="fromDate"         type="date-time"/>
+        <field name="thruDate"         type="date-time"/>
+
+        <relationship type="one" related="productinformationmgr_v2.Product"/>
+        <relationship type="one" title="PriceType" related="moqui.basic.Enumeration">
+            <key-map field-name="priceTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 4. ProductDimension                                          -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductDimension"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_DIMENSION"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productId"            type="id"             is-pk="true"/>
+        <field name="dimensionTypeEnumId"  type="id"             is-pk="true"/>
+        <field name="dimensionValue"       type="number-decimal"/>
+        <field name="valueUomId"           type="id"/>
+
+        <relationship type="one" related="productinformationmgr_v2.Product"/>
+        <relationship type="one" title="DimensionType" related="moqui.basic.Enumeration">
+            <key-map field-name="dimensionTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 5. ProductAssoc                                              -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductAssoc"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_ASSOC"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productId"               type="id"        is-pk="true"/>
+        <field name="toProductId"             type="id"        is-pk="true"/>
+        <field name="productAssocTypeEnumId"  type="id"        is-pk="true"/>
+        <field name="fromDate"                type="date-time" is-pk="true"/>
+        <field name="thruDate"                type="date-time"/>
+
+        <relationship type="one" related="productinformationmgr_v2.Product">
+            <key-map field-name="productId"/>
+        </relationship>
+        <relationship type="one" title="ToProduct" related="productinformationmgr_v2.Product">
+            <key-map field-name="toProductId"/>
+        </relationship>
+        <relationship type="one" title="ProductAssocType" related="moqui.basic.Enumeration">
+            <key-map field-name="productAssocTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 6. ProductFeatureType  (custom type table, not an enum)      -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductFeatureType"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_FEATURE_TYPE"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productFeatureTypeId"  type="id"          is-pk="true"/>
+        <field name="description"           type="text-medium"/>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 7. ProductFeature                                            -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductFeature"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_FEATURE"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productFeatureId"      type="id"            is-pk="true"/>
+        <field name="productFeatureTypeId"  type="id"/>
+        <field name="description"           type="text-medium"/>
+        <field name="fromDate"              type="date-time"/>
+        <field name="thruDate"              type="date-time"/>
+
+        <relationship type="one" related="productinformationmgr_v2.ProductFeatureType"/>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 8. ProductFeatureCategory                                    -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductFeatureCategory"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_FEATURE_CATEGORY"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productFeatureCategoryId"  type="id"            is-pk="true"/>
+        <field name="categoryName"              type="text-medium"/>
+        <field name="description"               type="text-very-long"/>
+        <field name="sequenceNum"               type="number-integer"/>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 9. ProductFeatureGroup  (links Feature → FeatureCategory)    -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductFeatureGroup"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_FEATURE_GROUP"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productFeatureId"          type="id"  is-pk="true"/>
+        <field name="productFeatureCategoryId"  type="id"  is-pk="true"/>
+
+        <relationship type="one" related="productinformationmgr_v2.ProductFeature"/>
+        <relationship type="one" related="productinformationmgr_v2.ProductFeatureCategory"/>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 10. ProductFeatureAppl  (links Feature → Product)           -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductFeatureAppl"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_FEATURE_APPL"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productId"                  type="id"        is-pk="true"/>
+        <field name="productFeatureId"           type="id"        is-pk="true"/>
+        <field name="productFeatureApplTypeEnumId" type="id"      is-pk="true"/>
+        <field name="fromDate"                   type="date-time" is-pk="true"/>
+        <field name="thruDate"                   type="date-time"/>
+
+        <relationship type="one" related="productinformationmgr_v2.Product"/>
+        <relationship type="one" related="productinformationmgr_v2.ProductFeature"/>
+        <relationship type="one" title="ProductFeatureApplType" related="moqui.basic.Enumeration">
+            <key-map field-name="productFeatureApplTypeEnumId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 11. ProductCategory                                          -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductCategory"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_CATEGORY"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productCategoryId"  type="id"            is-pk="true"/>
+        <field name="categoryName"       type="text-medium"/>
+        <field name="description"        type="text-very-long"/>
+        <field name="parentCategoryId"   type="id"/>
+        <field name="sequenceNum"        type="number-integer"/>
+        <field name="fromDate"           type="date-time"/>
+        <field name="thruDate"           type="date-time"/>
+
+        <relationship type="one" title="ParentProductCategory" related="productinformationmgr_v2.ProductCategory">
+            <key-map field-name="parentCategoryId" related="productCategoryId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 12. ProductCategoryMember  (links Product → ProductCategory) -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductCategoryMember"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_CATEGORY_MEMBER"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productId"          type="id"        is-pk="true"/>
+        <field name="productCategoryId"  type="id"        is-pk="true"/>
+        <field name="fromDate"           type="date-time" is-pk="true"/>
+        <field name="thruDate"           type="date-time"/>
+        <field name="sequenceNum"        type="number-integer"/>
+
+        <relationship type="one" related="productinformationmgr_v2.Product"/>
+        <relationship type="one" related="productinformationmgr_v2.ProductCategory"/>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 13. Topic  (Taxonomy hierarchy node)                         -->
+    <!-- ============================================================ -->
+    <entity entity-name="Topic"
+            package="productinformationmgr_v2"
+            table-name="PIM_TOPIC"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="topicId"     type="id"             is-pk="true"/>
+        <field name="name"        type="text-medium"/>
+        <field name="parentId"    type="id"/>
+        <field name="typeEnumId"  type="id"/>
+        <field name="score"       type="number-decimal"/>
+
+        <relationship type="one" title="Parent" related="productinformationmgr_v2.Topic">
+            <key-map field-name="parentId" related="topicId"/>
+        </relationship>
+        <relationship type="one" title="TopicType" related="moqui.basic.Enumeration">
+            <key-map field-name="typeEnumId"/>
+        </relationship>
+    </entity>
+
+    <!-- ============================================================ -->
+    <!-- 14. ProductTopic  (links Product → Topic)                    -->
+    <!-- ============================================================ -->
+    <entity entity-name="ProductTopic"
+            package="productinformationmgr_v2"
+            table-name="PIM_PRODUCT_TOPIC"
+            cache="true"
+            authorize-skip="true">
+
+        <field name="productId"   type="id"        is-pk="true"/>
+        <field name="topicId"     type="id"        is-pk="true"/>
+        <field name="fromDate"    type="date-time" is-pk="true"/>
+        <field name="thruDate"    type="date-time"/>
+
+        <relationship type="one" related="productinformationmgr_v2.Product"/>
+        <relationship type="one" related="productinformationmgr_v2.Topic"/>
+    </entity>
+
+</entities>
+

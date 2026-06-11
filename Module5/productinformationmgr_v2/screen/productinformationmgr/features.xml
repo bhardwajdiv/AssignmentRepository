@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all">
+
+    <!-- ============================================================ -->
+    <!-- TRANSITIONS                                                   -->
+    <!-- ============================================================ -->
+    <transition name="createFeatureType">
+        <actions>
+            <service-call name="create#productinformationmgr_v2.ProductFeatureType" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createFeature">
+        <actions>
+            <service-call name="create#productinformationmgr_v2.ProductFeature" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createFeatureCategory">
+        <actions>
+            <service-call name="create#productinformationmgr_v2.ProductFeatureCategory" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <transition name="createFeatureGroup">
+        <actions>
+            <service-call name="create#productinformationmgr_v2.ProductFeatureGroup" in-map="true"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
+    <!-- ============================================================ -->
+    <!-- ACTIONS                                                      -->
+    <!-- ============================================================ -->
+    <actions>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeatureType" list="featureTypeList">
+            <order-by field-name="productFeatureTypeId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeature" list="featureList">
+            <search-form-inputs/>
+            <order-by field-name="productFeatureTypeId,productFeatureId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeatureCategory" list="featureCategoryList">
+            <order-by field-name="sequenceNum"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeatureGroup" list="featureGroupList"/>
+    </actions>
+
+    <!-- ============================================================ -->
+    <!-- WIDGETS                                                      -->
+    <!-- ============================================================ -->
+    <widgets>
+
+        <!-- ROW 1: Feature Types (left) + Features (right) -->
+        <container-row>
+            <row-col md="4">
+                <container-box>
+                    <box-header title="Feature Types"/>
+                    <box-toolbar>
+                        <container-dialog id="AddFeatureTypeDialog" button-text="Add Type">
+                            <form-single name="AddFeatureTypeForm" transition="createFeatureType">
+                                <field name="productFeatureTypeId">
+                                    <default-field title="Type ID (e.g. COLOR)">
+                                        <text-line size="20"/>
+                                    </default-field>
+                                </field>
+                                <field name="description">
+                                    <default-field title="Description"><text-line size="30"/></default-field>
+                                </field>
+                                <field name="submitBtn">
+                                    <default-field title="Add"><submit/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="FeatureTypeList" list="featureTypeList" skip-form="true">
+                            <field name="productFeatureTypeId">
+                                <default-field title="Type ID"><display/></default-field>
+                            </field>
+                            <field name="description">
+                                <default-field title="Description"><display/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+
+            <row-col md="8">
+                <container-box>
+                    <box-header title="Product Features"/>
+                    <box-toolbar>
+                        <container-dialog id="AddFeatureDialog" button-text="Add Feature">
+                            <form-single name="AddFeatureForm" transition="createFeature">
+                                <field name="productFeatureId">
+                                    <default-field title="Feature ID (e.g. COLOR_BLACK)">
+                                        <text-line size="20"/>
+                                    </default-field>
+                                </field>
+                                <field name="productFeatureTypeId">
+                                    <default-field title="Feature Type">
+                                        <drop-down>
+                                            <list-options list="featureTypeList"
+                                                          key="${productFeatureTypeId}"
+                                                          text="${description} (${productFeatureTypeId})"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="description">
+                                    <default-field title="Value / Description">
+                                        <text-line size="30"/>
+                                    </default-field>
+                                </field>
+                                <field name="submitBtn">
+                                    <default-field title="Add"><submit/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="FeatureList" list="featureList" skip-form="true">
+                            <field name="productFeatureTypeId">
+                                <header-field show-order-by="true"/>
+                                <default-field title="Type">
+                                    <display-entity entity-name="productinformationmgr_v2.ProductFeatureType"
+                                                   key-field-name="productFeatureTypeId"
+                                                   text="${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="productFeatureId">
+                                <header-field show-order-by="true"/>
+                                <default-field title="Feature ID"><display/></default-field>
+                            </field>
+                            <field name="description">
+                                <header-field show-order-by="true"><text-find/></header-field>
+                                <default-field title="Description"><display/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+
+        <!-- ROW 2: Feature Categories (left) + Feature Groups (right) -->
+        <container-row>
+            <row-col md="4">
+                <container-box>
+                    <box-header title="Feature Categories"/>
+                    <box-toolbar>
+                        <container-dialog id="AddFeatureCategoryDialog" button-text="Add Category">
+                            <form-single name="AddFeatureCategoryForm" transition="createFeatureCategory">
+                                <field name="productFeatureCategoryId">
+                                    <default-field title="Category ID"><text-line size="20"/></default-field>
+                                </field>
+                                <field name="categoryName">
+                                    <default-field title="Name"><text-line size="30"/></default-field>
+                                </field>
+                                <field name="sequenceNum">
+                                    <default-field title="Sequence #"><text-line size="5"/></default-field>
+                                </field>
+                                <field name="submitBtn">
+                                    <default-field title="Add"><submit/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="FeatureCategoryList" list="featureCategoryList" skip-form="true">
+                            <field name="productFeatureCategoryId">
+                                <default-field title="Category ID"><display/></default-field>
+                            </field>
+                            <field name="categoryName">
+                                <default-field title="Name"><display/></default-field>
+                            </field>
+                            <field name="sequenceNum">
+                                <default-field title="Seq"><display/></default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+
+            <row-col md="8">
+                <container-box>
+                    <box-header title="Feature Groups (Feature → Category mapping)"/>
+                    <box-toolbar>
+                        <container-dialog id="AddFeatureGroupDialog" button-text="Map Feature to Category">
+                            <form-single name="AddFeatureGroupForm" transition="createFeatureGroup">
+                                <field name="productFeatureId">
+                                    <default-field title="Feature">
+                                        <drop-down>
+                                            <list-options list="featureList"
+                                                          key="${productFeatureId}"
+                                                          text="${productFeatureTypeId} — ${description}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="productFeatureCategoryId">
+                                    <default-field title="Category">
+                                        <drop-down>
+                                            <list-options list="featureCategoryList"
+                                                          key="${productFeatureCategoryId}"
+                                                          text="${categoryName}"/>
+                                        </drop-down>
+                                    </default-field>
+                                </field>
+                                <field name="submitBtn">
+                                    <default-field title="Map"><submit/></default-field>
+                                </field>
+                            </form-single>
+                        </container-dialog>
+                    </box-toolbar>
+                    <box-body>
+                        <form-list name="FeatureGroupList" list="featureGroupList" skip-form="true">
+                            <field name="productFeatureId">
+                                <default-field title="Feature">
+                                    <display-entity entity-name="productinformationmgr_v2.ProductFeature"
+                                                   key-field-name="productFeatureId"
+                                                   text="${productFeatureTypeId} — ${description}"/>
+                                </default-field>
+                            </field>
+                            <field name="productFeatureCategoryId">
+                                <default-field title="Category">
+                                    <display-entity entity-name="productinformationmgr_v2.ProductFeatureCategory"
+                                                   key-field-name="productFeatureCategoryId"
+                                                   text="${categoryName}"/>
+                                </default-field>
+                            </field>
+                        </form-list>
+                    </box-body>
+                </container-box>
+            </row-col>
+        </container-row>
+
+    </widgets>
+
+</screen>

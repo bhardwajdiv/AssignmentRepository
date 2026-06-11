@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all"
+        default-menu-title="Product Info Manager"
+        default-menu-index="31">
+
+    <subscreens default-item="products">
+        <subscreens-item name="products"
+                         menu-title="Products"
+                         location="component://productinformationmgr_v2/screen/productinformationmgr/products.xml"/>
+        <subscreens-item name="features"
+                         menu-title="Product Features"
+                         location="component://productinformationmgr_v2/screen/productinformationmgr/features.xml"/>
+        <subscreens-item name="taxonomy"
+                         menu-title="Taxonomy"
+                         location="component://productinformationmgr_v2/screen/productinformationmgr/taxonomy.xml"/>
+        <subscreens-item name="productDetail"
+                         menu-title="Product Detail"
+                         location="component://productinformationmgr_v2/screen/productinformationmgr/ProductDetail.xml"
+                         menu-include="false"/>
+    </subscreens>
+
+    <widgets>
+        <subscreens-menu/>
+        <subscreens-active/>
+    </widgets>
+
+</screen>
