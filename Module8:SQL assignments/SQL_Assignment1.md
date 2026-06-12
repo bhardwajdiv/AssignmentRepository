@@ -118,11 +118,12 @@ JOIN order_item oi ON oh.ORDER_ID = oi.ORDER_ID
 JOIN order_item_ship_group oisg ON oi.ORDER_ID = oisg.ORDER_ID
     AND oi.SHIP_GROUP_SEQ_ID = oisg.SHIP_GROUP_SEQ_ID
 JOIN product p ON oi.PRODUCT_ID = p.PRODUCT_ID
-LEFT JOIN facility f ON oisg.FACILITY_ID = f.FACILITY_ID
+JOIN facility f ON oisg.FACILITY_ID = f.FACILITY_ID
 JOIN order_status os ON oh.ORDER_ID = os.ORDER_ID
     AND os.STATUS_ID = 'ORDER_COMPLETED'
-WHERE oh.ORDER_DATE >= '2023-08-01'
-  AND oh.ORDER_DATE < '2023-09-01';
+WHERE oh.ORDER_TYPE_ID = 'SALES_ORDER'
+  AND os.STATUS_DATETIME >= '2023-08-01'
+  AND os.STATUS_DATETIME < '2023-09-01';
 ```
 
 ---
@@ -138,11 +139,10 @@ Finance teams need to see new orders and their payment methods for reconciliatio
 SELECT
     oh.ORDER_ID,
     oh.GRAND_TOTAL AS TOTAL_AMOUNT,
-    pm.PAYMENT_METHOD_TYPE_ID AS PAYMENT_METHOD,
+    opp.PAYMENT_METHOD_TYPE_ID AS PAYMENT_METHOD,
     oh.EXTERNAL_ID AS SHOPIFY_ORDER_ID
 FROM order_header oh
 JOIN order_payment_preference opp ON oh.ORDER_ID = opp.ORDER_ID
-LEFT JOIN payment_method pm ON opp.PAYMENT_METHOD_ID = pm.PAYMENT_METHOD_ID
 WHERE oh.ORDER_TYPE_ID = 'SALES_ORDER'
   AND oh.ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
 ORDER BY oh.ORDER_DATE DESC;
@@ -167,9 +167,9 @@ FROM order_header oh
 JOIN order_payment_preference opp ON oh.ORDER_ID = opp.ORDER_ID
 LEFT JOIN order_shipment os ON oh.ORDER_ID = os.ORDER_ID
 LEFT JOIN shipment sh ON os.SHIPMENT_ID = sh.SHIPMENT_ID
-WHERE opp.STATUS_ID IN ('PAYMENT_RECEIVED', 'PAYMENT_SETTLED')
+WHERE opp.STATUS_ID = 'PAYMENT_SETTLED'
   AND (sh.STATUS_ID IS NULL
-    OR sh.STATUS_ID NOT IN ('SHIPMENT_SHIPPED', 'SHIPMENT_DELIVERED'));
+    OR sh.STATUS_ID != 'SHIPMENT_SHIPPED');
 ```
 
 ---
@@ -189,6 +189,7 @@ FROM order_header oh
 JOIN order_status os ON oh.ORDER_ID = os.ORDER_ID
 WHERE oh.STATUS_ID = 'ORDER_COMPLETED'
   AND os.STATUS_ID = 'ORDER_COMPLETED'
+  AND DATE(os.STATUS_DATETIME) = CURDATE()
 GROUP BY HOUR(os.STATUS_DATETIME)
 ORDER BY HOUR ASC;
 ```
@@ -204,17 +205,14 @@ BOPIS (Buy Online, Pickup In Store) is a key retail strategy. Finance wants to k
 
 ```sql
 SELECT
-    COUNT(oh.ORDER_ID) AS TOTAL_ORDERS,
-    SUM(oh.GRAND_TOTAL) AS TOTAL_REVENUE
+    COUNT(DISTINCT oh.ORDER_ID) AS TOTAL_ORDERS,
+    SUM(oi.UNIT_PRICE * oi.QUANTITY) AS TOTAL_REVENUE
 FROM order_header oh
+JOIN order_item oi ON oh.ORDER_ID = oi.ORDER_ID
+JOIN order_item_ship_group oisg ON oh.ORDER_ID = oisg.ORDER_ID
+    AND oisg.SHIPMENT_METHOD_TYPE_ID = 'STOREPICKUP'
 WHERE oh.STATUS_ID = 'ORDER_COMPLETED'
-  AND YEAR(oh.ORDER_DATE) = YEAR(CURDATE()) - 1
-  AND EXISTS (
-      SELECT 1
-      FROM order_item_ship_group oisg
-      WHERE oisg.ORDER_ID = oh.ORDER_ID
-        AND oisg.SHIPMENT_METHOD_TYPE_ID = 'STOREPICKUP'
-  );
+  AND YEAR(oh.ORDER_DATE) = YEAR(CURDATE()) - 1;
 ```
 
 ---
