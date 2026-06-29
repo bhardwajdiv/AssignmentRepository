@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
+
+    <!-- ================================================================ -->
+    <!-- SERVICE 1 — find#DynamicProductFinder.Product                       -->
+    <!-- Step 4: findProduct                                              -->
+    <!--                                                                  -->
+    <!-- Searches FindProductView with optional filters:                  -->
+    <!--   • productId         — exact match                              -->
+    <!--   • productName       — case-insensitive partial match (LIKE)    -->
+    <!--   • priceMin/priceMax — price range on LIST_PRICE rows           -->
+    <!--   • productFeatureTypeId — any feature type (COLOR, SIZE, etc.)  -->
+    <!--   • productCategoryId — membership in a specific category        -->
+    <!--                                                                  -->
+    <!-- Returns deduplicated productList (one entry per product).        -->
+    <!-- ================================================================ -->
+    <service verb="find" noun="Product" authenticate="anonymous-all">
+        <description>Search products using flexible, case-insensitive filters via FindProductView.</description>
+        <in-parameters>
+            <parameter name="productId"            type="String"/>
+            <parameter name="productName"          type="String"/>
+            <parameter name="priceMin"             type="BigDecimal"/>
+            <parameter name="priceMax"             type="BigDecimal"/>
+            <parameter name="productFeatureTypeId" type="String"/>
+            <parameter name="productCategoryId"    type="String"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productList" type="List"/>
+        </out-parameters>
+        <actions>
+            <script><![CDATA[
+                import org.moqui.entity.EntityCondition
+
+                def ef = ec.entity.find("DynamicProductFinder.FindProductView")
+
+                // Exact match on Product ID
+                if (productId) {
+                    ef.condition("productId", productId)
+                }
+
+                // Case-insensitive partial match on Product Name
+                if (productName) {
+                    ef.condition(ec.entity.conditionFactory.makeCondition(
+                        "productName",
+                        EntityCondition.ComparisonOperator.LIKE,
+                        "%" + productName + "%"
+                    ))
+                }
+
+                // Price range — filter against LIST_PRICE rows only
+                if (priceMin != null || priceMax != null) {
+                    ef.condition("priceTypeEnumId", "LIST_PRICE")
+                    if (priceMin != null) {
+                        ef.condition(ec.entity.conditionFactory.makeCondition(
+                            "price",
+                            EntityCondition.ComparisonOperator.GREATER_THAN_EQUAL_TO,
+                            priceMin
+                        ))
+                    }
+                    if (priceMax != null) {
+                        ef.condition(ec.entity.conditionFactory.makeCondition(
+                            "price",
+                            EntityCondition.ComparisonOperator.LESS_THAN_EQUAL_TO,
+                            priceMax
+                        ))
+                    }
+                }
+
+                // Filter by feature type (e.g. COLOR, STORAGE, NETWORK)
+                if (productFeatureTypeId) {
+                    ef.condition("productFeatureTypeId", productFeatureTypeId)
+                }
+
+                // Filter by category membership
+                if (productCategoryId) {
+                    ef.condition("productCategoryId", productCategoryId)
+                }
+
+                ef.orderBy("productId")
+                def rawList = ef.list()
+
+                // Deduplicate: joins produce one row per (product × price × feature);
+                // keep only the first row for each productId.
+                def seen = new LinkedHashSet<String>()
+                productList = []
+                for (row in rawList) {
+                    if (seen.add((String) row.productId)) {
+                        productList.add(row)
+                    }
+                }
+            ]]></script>
+        </actions>
+    </service>
+
+    <!-- ================================================================ -->
+    <!-- SERVICE 2 — create#DynamicProductFinder.Product                     -->
+    <!-- Step 5: createProduct                                            -->
+    <!--                                                                  -->
+    <!-- Creates a new product, enforcing name uniqueness.                -->
+    <!-- Required inputs: productName, productCategoryId, price           -->
+    <!-- Also creates the initial ProductCategoryMember and ProductPrice. -->
+    <!-- ================================================================ -->
+    <service verb="create" noun="Product" authenticate="anonymous-all">
+        <description>Create a new product. Fails if a product with the same name already exists.</description>
+        <in-parameters>
+            <parameter name="productName"          type="String"     required="true"/>
+            <parameter name="productCategoryId"    type="String"     required="true"/>
+            <parameter name="price"                type="BigDecimal" required="true"/>
+            <parameter name="productTypeEnumId"    type="String"     default-value="FINISHED_GOOD"/>
+            <parameter name="description"          type="String"/>
+            <parameter name="isVirtual"            type="String"     default-value="N"/>
+            <parameter name="isVariant"            type="String"     default-value="N"/>
+            <parameter name="priceTypeEnumId"      type="String"     default-value="LIST_PRICE"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productId" type="String"/>
+        </out-parameters>
+        <actions>
+            <script><![CDATA[
+                // ── Step 1: Uniqueness check using findProduct ──────────────
+                def findResult = ec.service.sync()
+                    .name("find#DynamicProductFinder.Product")
+                    .parameter("productName", productName)
+                    .call()
+
+                if (findResult.productList) {
+                    ec.message.addError("A product named '${productName}' already exists. Product names must be unique.")
+                    return
+                }
+
+                // ── Step 2: Validate category exists ─────────────────────────
+                def category = ec.entity.find("productinformationmgr_v2.ProductCategory")
+                    .condition("productCategoryId", productCategoryId).one()
+                if (!category) {
+                    ec.message.addError("Category '${productCategoryId}' does not exist.")
+                    return
+                }
+
+                // ── Step 3: Create the Product record ─────────────────────────
+                def createResult = ec.service.sync()
+                    .name("create#productinformationmgr_v2.Product")
+                    .parameters([
+                        productName       : productName,
+                        productTypeEnumId : productTypeEnumId,
+                        description       : description ?: "",
+                        isVirtual         : isVirtual,
+                        isVariant         : isVariant,
+                        fromDate          : ec.user.nowTimestamp
+                    ]).call()
+                productId = createResult.productId
+
+                // ── Step 4: Link product to category ─────────────────────────
+                ec.service.sync()
+                    .name("create#productinformationmgr_v2.ProductCategoryMember")
+                    .parameters([
+                        productId        : productId,
+                        productCategoryId: productCategoryId,
+                        fromDate         : ec.user.nowTimestamp
+                    ]).call()
+
+                // ── Step 5: Set the initial price ─────────────────────────────
+                ec.service.sync()
+                    .name("create#productinformationmgr_v2.ProductPrice")
+                    .parameters([
+                        productId      : productId,
+                        priceTypeEnumId: priceTypeEnumId,
+                        price          : price,
+                        fromDate       : ec.user.nowTimestamp
+                    ]).call()
+            ]]></script>
+        </actions>
+    </service>
+
+    <!-- ================================================================ -->
+    <!-- SERVICE 3 — update#DynamicProductFinder.Product                     -->
+    <!-- Step 5: updateProduct                                            -->
+    <!--                                                                  -->
+    <!-- Updates an existing product's name, description, price, and/or   -->
+    <!-- applied features. Validates product existence before any change. -->
+    <!-- ================================================================ -->
+    <service verb="update" noun="Product" authenticate="anonymous-all">
+        <description>Update an existing product's details. Product must exist.</description>
+        <in-parameters>
+            <parameter name="productId"                    type="String" required="true"/>
+            <parameter name="productName"                  type="String"/>
+            <parameter name="description"                  type="String"/>
+            <parameter name="price"                        type="BigDecimal"/>
+            <parameter name="priceTypeEnumId"              type="String" default-value="LIST_PRICE"/>
+            <parameter name="productFeatureId"             type="String"/>
+            <parameter name="productFeatureApplTypeEnumId" type="String" default-value="STANDARD_FEATURE"/>
+        </in-parameters>
+        <actions>
+            <script><![CDATA[
+                // ── Validate product exists ───────────────────────────────────
+                def product = ec.entity.find("productinformationmgr_v2.Product")
+                    .condition("productId", productId).one()
+                if (!product) {
+                    ec.message.addError("Product '${productId}' does not exist.")
+                    return
+                }
+
+                // ── Update core product fields ────────────────────────────────
+                def updateMap = [productId: productId]
+                if (productName)   updateMap.productName  = productName
+                if (description)   updateMap.description  = description
+                if (productName || description) {
+                    ec.service.sync()
+                        .name("update#productinformationmgr_v2.Product")
+                        .parameters(updateMap).call()
+                }
+
+                // ── Update or create price entry ──────────────────────────────
+                if (price != null) {
+                    def existingPrices = ec.entity.find("productinformationmgr_v2.ProductPrice")
+                        .condition("productId", productId)
+                        .condition("priceTypeEnumId", priceTypeEnumId)
+                        .list()
+
+                    if (existingPrices) {
+                        ec.service.sync()
+                            .name("update#productinformationmgr_v2.ProductPrice")
+                            .parameters([
+                                productPriceId : existingPrices[0].productPriceId,
+                                price          : price
+                            ]).call()
+                    } else {
+                        ec.service.sync()
+                            .name("create#productinformationmgr_v2.ProductPrice")
+                            .parameters([
+                                productId      : productId,
+                                priceTypeEnumId: priceTypeEnumId,
+                                price          : price,
+                                fromDate       : ec.user.nowTimestamp
+                            ]).call()
+                    }
+                }
+
+                // ── Apply a feature if provided (idempotent) ─────────────────
+                if (productFeatureId) {
+                    def existing = ec.entity.find("productinformationmgr_v2.ProductFeatureAppl")
+                        .condition("productId",                  productId)
+                        .condition("productFeatureId",           productFeatureId)
+                        .condition("productFeatureApplTypeEnumId", productFeatureApplTypeEnumId)
+                        .list()
+                    if (!existing) {
+                        ec.service.sync()
+                            .name("create#productinformationmgr_v2.ProductFeatureAppl")
+                            .parameters([
+                                productId                    : productId,
+                                productFeatureId             : productFeatureId,
+                                productFeatureApplTypeEnumId : productFeatureApplTypeEnumId,
+                                fromDate                     : ec.user.nowTimestamp
+                            ]).call()
+                    }
+                }
+            ]]></script>
+        </actions>
+    </service>
+
+    <!-- ================================================================ -->
+    <!-- SERVICE 4 — assoc#DynamicProductFinder.ProductToVirtual             -->
+    <!-- Step 6: assocProductToVirtual                                    -->
+    <!--                                                                  -->
+    <!-- Establishes a VARIANT association: virtualProduct → product.     -->
+    <!-- Validates both products exist before creating the relationship.  -->
+    <!-- ================================================================ -->
+    <service verb="assoc" noun="ProductToVirtual" authenticate="anonymous-all">
+        <description>Link a product as a variant of a virtual product. Both must exist.</description>
+        <in-parameters>
+            <parameter name="productId"        type="String" required="true"/>
+            <parameter name="virtualProductId" type="String" required="true"/>
+        </in-parameters>
+        <actions>
+            <script><![CDATA[
+                // ── Validate variant product exists ───────────────────────────
+                def variantProduct = ec.entity.find("productinformationmgr_v2.Product")
+                    .condition("productId", productId).one()
+                if (!variantProduct) {
+                    ec.message.addError("Variant product '${productId}' does not exist.")
+                    return
+                }
+
+                // ── Validate virtual product exists ───────────────────────────
+                def virtualProduct = ec.entity.find("productinformationmgr_v2.Product")
+                    .condition("productId", virtualProductId).one()
+                if (!virtualProduct) {
+                    ec.message.addError("Virtual product '${virtualProductId}' does not exist.")
+                    return
+                }
+
+                // ── Check no duplicate active association already exists ───────
+                def existing = ec.entity.find("productinformationmgr_v2.ProductAssoc")
+                    .condition("productId",               virtualProductId)
+                    .condition("toProductId",             productId)
+                    .condition("productAssocTypeEnumId",  "VARIANT")
+                    .list()
+                if (existing) {
+                    ec.message.addError("A VARIANT relationship already exists between '${virtualProductId}' and '${productId}'.")
+                    return
+                }
+
+                // ── Create the VARIANT association: virtual → variant ──────────
+                ec.service.sync()
+                    .name("create#productinformationmgr_v2.ProductAssoc")
+                    .parameters([
+                        productId              : virtualProductId,
+                        toProductId            : productId,
+                        productAssocTypeEnumId : "VARIANT",
+                        fromDate               : ec.user.nowTimestamp
+                    ]).call()
+            ]]></script>
+        </actions>
+    </service>
+
+    <!-- ================================================================ -->
+    <!-- SERVICE 5 — update#DynamicProductFinder.ProductVariant              -->
+    <!-- Step 6: updateProductVariant                                     -->
+    <!--                                                                  -->
+    <!-- Updates an existing VARIANT relationship between a virtual and   -->
+    <!-- a variant product.  Supports two operations:                     -->
+    <!--   1. Set thruDate (expire the existing association)              -->
+    <!--   2. Transfer the variant to a different virtual product         -->
+    <!--      (expires old association + creates a new one)               -->
+    <!-- ================================================================ -->
+    <service verb="update" noun="ProductVariant" authenticate="anonymous-all">
+        <description>Update the virtual-variant ProductAssoc. Expire or reassign the variant.</description>
+        <in-parameters>
+            <parameter name="productId"          type="String"    required="true"/>
+            <parameter name="virtualProductId"   type="String"    required="true"/>
+            <parameter name="thruDate"           type="Timestamp"/>
+            <parameter name="newVirtualProductId" type="String"/>
+        </in-parameters>
+        <actions>
+            <script><![CDATA[
+                // ── Locate the existing VARIANT association ────────────────────
+                def assocList = ec.entity.find("productinformationmgr_v2.ProductAssoc")
+                    .condition("productId",               virtualProductId)
+                    .condition("toProductId",             productId)
+                    .condition("productAssocTypeEnumId",  "VARIANT")
+                    .list()
+
+                if (!assocList) {
+                    ec.message.addError("No VARIANT relationship exists between virtual '${virtualProductId}' and product '${productId}'.")
+                    return
+                }
+
+                def assoc = assocList[0]
+
+                // ── Operation 1: Set / update thruDate ────────────────────────
+                if (thruDate) {
+                    ec.service.sync()
+                        .name("update#productinformationmgr_v2.ProductAssoc")
+                        .parameters([
+                            productId              : assoc.productId,
+                            toProductId            : assoc.toProductId,
+                            productAssocTypeEnumId : assoc.productAssocTypeEnumId,
+                            fromDate               : assoc.fromDate,
+                            thruDate               : thruDate
+                        ]).call()
+                }
+
+                // ── Operation 2: Transfer variant to a different virtual ───────
+                if (newVirtualProductId) {
+                    def newVirtual = ec.entity.find("productinformationmgr_v2.Product")
+                        .condition("productId", newVirtualProductId).one()
+                    if (!newVirtual) {
+                        ec.message.addError("New virtual product '${newVirtualProductId}' does not exist.")
+                        return
+                    }
+
+                    // Expire the current association
+                    ec.service.sync()
+                        .name("update#productinformationmgr_v2.ProductAssoc")
+                        .parameters([
+                            productId              : assoc.productId,
+                            toProductId            : assoc.toProductId,
+                            productAssocTypeEnumId : assoc.productAssocTypeEnumId,
+                            fromDate               : assoc.fromDate,
+                            thruDate               : ec.user.nowTimestamp
+                        ]).call()
+
+                    // Create the new association under the new virtual parent
+                    ec.service.sync()
+                        .name("create#productinformationmgr_v2.ProductAssoc")
+                        .parameters([
+                            productId              : newVirtualProductId,
+                            toProductId            : productId,
+                            productAssocTypeEnumId : "VARIANT",
+                            fromDate               : ec.user.nowTimestamp
+                        ]).call()
+                }
+            ]]></script>
+        </actions>
+    </service>
+
+</services>

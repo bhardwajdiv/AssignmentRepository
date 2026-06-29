@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
+
+    <!--
+        FindProductView — Step 3
+        ========================
+        A view-entity that joins Product with its pricing, category membership, and
+        applied features into a single queryable view. Used by the findProduct service
+        (Step 4) to support filtered product searches.
+
+        Join structure:
+            PROD  (Product)                 — base table
+             └─ PP   (ProductPrice)         — outer join on productId
+             └─ PCM  (ProductCategoryMember)— outer join on productId
+                  └─ PC  (ProductCategory) — outer join on productCategoryId from PCM
+             └─ PFA  (ProductFeatureAppl)  — outer join on productId
+                  └─ PF  (ProductFeature)  — outer join on productFeatureId from PFA
+
+        Because one Product can have many prices and many features, a single product
+        may yield multiple rows. The findProduct service deduplicates by productId.
+    -->
+    <view-entity entity-name="FindProductView" package="DynamicProductFinder">
+
+        <!-- ── Base: Product ── -->
+        <member-entity entity-alias="PROD"
+                       entity-name="productinformationmgr_v2.Product"/>
+
+        <!-- ── Prices (outer so products without a price still appear) ── -->
+        <member-entity entity-alias="PP"
+                       entity-name="productinformationmgr_v2.ProductPrice"
+                       join-from-alias="PROD"
+                       join-type="outer">
+            <key-map field-name="productId"/>
+        </member-entity>
+
+        <!-- ── Category membership ── -->
+        <member-entity entity-alias="PCM"
+                       entity-name="productinformationmgr_v2.ProductCategoryMember"
+                       join-from-alias="PROD"
+                       join-type="outer">
+            <key-map field-name="productId"/>
+        </member-entity>
+
+        <!-- ── Category details (joined from the membership row) ── -->
+        <member-entity entity-alias="PC"
+                       entity-name="productinformationmgr_v2.ProductCategory"
+                       join-from-alias="PCM"
+                       join-type="outer">
+            <key-map field-name="productCategoryId"/>
+        </member-entity>
+
+        <!-- ── Feature applications (which features a product has) ── -->
+        <member-entity entity-alias="PFA"
+                       entity-name="productinformationmgr_v2.ProductFeatureAppl"
+                       join-from-alias="PROD"
+                       join-type="outer">
+            <key-map field-name="productId"/>
+        </member-entity>
+
+        <!-- ── Feature details ── -->
+        <member-entity entity-alias="PF"
+                       entity-name="productinformationmgr_v2.ProductFeature"
+                       join-from-alias="PFA"
+                       join-type="outer">
+            <key-map field-name="productFeatureId"/>
+        </member-entity>
+
+        <!-- ══ Aliased fields exposed by this view ══ -->
+
+        <!-- From Product (PROD) -->
+        <alias entity-alias="PROD" name="productId"/>
+        <alias entity-alias="PROD" name="productName"/>
+        <alias entity-alias="PROD" name="productTypeEnumId"/>
+        <alias entity-alias="PROD" name="description"/>
+        <alias entity-alias="PROD" name="isVirtual"/>
+        <alias entity-alias="PROD" name="isVariant"/>
+
+        <!-- From ProductPrice (PP) — LIST_PRICE preferred; filtered in service -->
+        <alias entity-alias="PP"   name="productPriceId"/>
+        <alias entity-alias="PP"   name="price"/>
+        <alias entity-alias="PP"   name="priceTypeEnumId"/>
+
+        <!-- From ProductCategory (PC) -->
+        <alias entity-alias="PC"   name="productCategoryId"/>
+        <alias entity-alias="PC"   name="categoryName"/>
+
+        <!-- From ProductFeature (PF) -->
+        <alias entity-alias="PF"   name="productFeatureId"/>
+        <alias entity-alias="PF"   name="productFeatureTypeId"/>
+        <alias entity-alias="PF"   name="featureDescription" field="description"/>
+
+    </view-entity>
+
+</entities>

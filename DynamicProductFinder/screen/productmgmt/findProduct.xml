@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all">
+
+    <!--
+        findProduct.xml — Steps 7 & 8 (controller / event layer)
+        ==========================================================
+        This screen is the "controller" for the Product Management UI.
+        Each <transition> corresponds to an event triggered from the
+        front-end (equivalent to OFBiz controller event mappings).
+
+        Transitions (events):
+            createProduct      → create#DynamicProductFinder.Product
+            updateProduct      → update#DynamicProductFinder.Product
+            assocProductToVirtual → assoc#DynamicProductFinder.ProductToVirtual
+            updateProductVariant  → update#DynamicProductFinder.ProductVariant
+
+        The <actions> block runs the findProduct search on every page
+        render and pre-loads dropdown data for the UI.
+
+        <widgets> renders the FTL template findProduct.ftl which owns
+        all HTML/form rendering (Step 8).
+    -->
+
+    <!-- ============================================================ -->
+    <!-- PARAMETERS — URL / form inputs fed into actions              -->
+    <!-- ============================================================ -->
+    <parameter name="productId"/>
+    <parameter name="productName"/>
+    <parameter name="priceMin"             type="BigDecimal"/>
+    <parameter name="priceMax"             type="BigDecimal"/>
+    <parameter name="productFeatureTypeId"/>
+    <parameter name="productCategoryId"/>
+    <parameter name="pageIndex"            type="Integer" default-value="0"/>
+    <parameter name="pageSize"             type="Integer" default-value="10"/>
+
+    <!-- ============================================================ -->
+    <!-- EVENT: createProduct                                         -->
+    <!-- Triggered when the Create Product form is submitted.         -->
+    <!-- ============================================================ -->
+    <transition name="createProduct">
+        <actions>
+            <service-call name="create#DynamicProductFinder.Product" in-map="context"/>
+        </actions>
+        <default-response url="."/>
+        <error-response url="."/>
+    </transition>
+
+    <!-- ============================================================ -->
+    <!-- EVENT: updateProduct                                         -->
+    <!-- Triggered when the Edit Product form is submitted.           -->
+    <!-- ============================================================ -->
+    <transition name="updateProduct">
+        <actions>
+            <service-call name="update#DynamicProductFinder.Product" in-map="context"/>
+        </actions>
+        <default-response url="."/>
+        <error-response url="."/>
+    </transition>
+
+    <!-- ============================================================ -->
+    <!-- EVENT: assocProductToVirtual                                 -->
+    <!-- Triggered when the Assign Variant form is submitted.         -->
+    <!-- ============================================================ -->
+    <transition name="assocProductToVirtual">
+        <actions>
+            <service-call name="assoc#DynamicProductFinder.ProductToVirtual" in-map="context"/>
+        </actions>
+        <default-response url="."/>
+        <error-response url="."/>
+    </transition>
+
+    <!-- ============================================================ -->
+    <!-- EVENT: updateProductVariant                                  -->
+    <!-- Triggered when the Update Variant Association form submits.  -->
+    <!-- ============================================================ -->
+    <transition name="updateProductVariant">
+        <actions>
+            <service-call name="update#DynamicProductFinder.ProductVariant" in-map="context"/>
+        </actions>
+        <default-response url="."/>
+        <error-response url="."/>
+    </transition>
+
+    <!-- ============================================================ -->
+    <!-- ACTIONS — run on every render to build the page context      -->
+    <!-- ============================================================ -->
+    <actions>
+        <!-- Run findProduct whenever at least one search filter is set -->
+        <if condition="productId || productName || priceMin != null || priceMax != null ||
+                        productFeatureTypeId || productCategoryId">
+            <service-call name="find#DynamicProductFinder.Product"
+                          in-map="[productId: productId, productName: productName,
+                                   priceMin: priceMin, priceMax: priceMax,
+                                   productFeatureTypeId: productFeatureTypeId,
+                                   productCategoryId: productCategoryId]"
+                          out-map="context"/>
+            <!-- productList is now in context, available to the FTL -->
+        </if>
+
+        <!-- Dropdown data for the UI forms -->
+        <entity-find entity-name="productinformationmgr_v2.ProductCategory" list="categoryList">
+            <order-by field-name="categoryName"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeatureType" list="featureTypeList">
+            <order-by field-name="productFeatureTypeId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.ProductFeature" list="allFeatures">
+            <order-by field-name="productFeatureTypeId,productFeatureId"/>
+        </entity-find>
+        <entity-find entity-name="productinformationmgr_v2.Product" list="allProducts">
+            <econdition field-name="isVirtual" value="Y"/>
+            <order-by field-name="productId"/>
+        </entity-find>
+    </actions>
+
+    <!-- ============================================================ -->
+    <!-- WIDGETS — render the FTL template (Step 8)                   -->
+    <!-- ============================================================ -->
+    <widgets>
+        <!-- Error / success messages from transitions -->
+        <render-mode>
+            <text type="html,vuet"
+                  location="component://DynamicProductFinder/template/productmgmt/findProduct.ftl"/>
+        </render-mode>
+    </widgets>
+
+</screen>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moqui-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/moqui-conf-2.1.xsd">
+    <screen-facade>
+        <!-- Mount the DynamicProductFinder root screen into the main webroot app menu -->
+        <screen location="component://webroot/screen/webroot/apps.xml">
+            <subscreens-item name="DynamicProductFinder"
+                             menu-title="Product Management"
+                             menu-index="32"
+                             location="component://DynamicProductFinder/screen/DynamicProductFinder.xml"/>
+        </screen>
+    </screen-facade>
+</moqui-conf>

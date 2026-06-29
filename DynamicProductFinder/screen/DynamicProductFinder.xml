@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        require-authentication="anonymous-all"
+        default-menu-title="Product Management"
+        default-menu-index="32">
+
+    <!-- Root screen: mounts the Find Product view as the default subscreen -->
+    <subscreens default-item="findProduct">
+        <subscreens-item name="findProduct"
+                         menu-title="Find Product"
+                         location="component://DynamicProductFinder/screen/productmgmt/findProduct.xml"/>
+    </subscreens>
+
+    <widgets>
+        <subscreens-menu/>
+        <subscreens-active/>
+    </widgets>
+
+</screen>
