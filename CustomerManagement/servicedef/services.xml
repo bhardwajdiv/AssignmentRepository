@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+
+    <description>Customer Management Services</description>
+    <vendor/>
+    <version>1.0</version>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Step 4: findCustomer
+         Searches Person records and enriches each match with primary
+         email, phone, and postal address from the contact mech tables.
+         ═══════════════════════════════════════════════════════════════ -->
+    <service name="findCustomer" engine="groovy"
+        location="component://CustomerManagement/groovyScripts/CustomerManagementServices.groovy"
+        invoke="findCustomer" auth="true">
+        <description>Search for customers with optional filters. Supports partial, case-insensitive matching.</description>
+        <attribute name="partyId"        type="String" mode="IN" optional="true"/>
+        <attribute name="firstName"      type="String" mode="IN" optional="true"/>
+        <attribute name="lastName"       type="String" mode="IN" optional="true"/>
+        <attribute name="emailAddress"   type="String" mode="IN" optional="true"/>
+        <attribute name="contactNumber"  type="String" mode="IN" optional="true"/>
+        <attribute name="address"        type="String" mode="IN" optional="true"/>
+        <attribute name="customerList"   type="List"   mode="OUT" optional="true"/>
+    </service>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Step 5a: createCustomer
+         Uniqueness enforced via EmailPrimary contact mech purpose.
+         ═══════════════════════════════════════════════════════════════ -->
+    <service name="createCustomer" engine="groovy"
+        location="component://CustomerManagement/groovyScripts/CustomerManagementServices.groovy"
+        invoke="createCustomer" auth="true">
+        <description>Create a Party/Person and their primary email. Rejects duplicate email addresses.</description>
+        <attribute name="emailAddress" type="String" mode="IN" optional="false"/>
+        <attribute name="firstName"    type="String" mode="IN" optional="false"/>
+        <attribute name="lastName"     type="String" mode="IN" optional="false"/>
+        <attribute name="partyId"      type="String" mode="OUT" optional="false"/>
+    </service>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Step 5b: updateCustomer
+         Finds the customer by primary email; updates phone and/or
+         postal address (creates them if they do not yet exist).
+         ═══════════════════════════════════════════════════════════════ -->
+    <service name="updateCustomer" engine="groovy"
+        location="component://CustomerManagement/groovyScripts/CustomerManagementServices.groovy"
+        invoke="updateCustomer" auth="true">
+        <description>Update phone number and/or postal address for the customer identified by email.</description>
+        <attribute name="emailAddress"  type="String" mode="IN" optional="false"/>
+        <attribute name="contactNumber" type="String" mode="IN" optional="true"/>
+        <attribute name="address1"      type="String" mode="IN" optional="true"/>
+        <attribute name="city"          type="String" mode="IN" optional="true"/>
+        <attribute name="postalCode"    type="String" mode="IN" optional="true"/>
+        <attribute name="countryGeoId"  type="String" mode="IN" optional="true"/>
+    </service>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Step 6a: createCustomerRelationship
+         Creates a PartyRelationship between two parties.
+         roleTypeIdFrom / roleTypeIdTo default to "_NA_" if omitted.
+         ═══════════════════════════════════════════════════════════════ -->
+    <service name="createCustomerRelationship" engine="groovy"
+        location="component://CustomerManagement/groovyScripts/CustomerManagementServices.groovy"
+        invoke="createCustomerRelationship" auth="true">
+        <description>Establish a PartyRelationship between two parties. Prevents duplicate active relationships.</description>
+        <attribute name="partyIdFrom"              type="String" mode="IN" optional="false"/>
+        <attribute name="partyIdTo"                type="String" mode="IN" optional="false"/>
+        <attribute name="partyRelationshipTypeId"  type="String" mode="IN" optional="false"/>
+        <attribute name="roleTypeIdFrom"           type="String" mode="IN" optional="true"/>
+        <attribute name="roleTypeIdTo"             type="String" mode="IN" optional="true"/>
+        <attribute name="statusId"                 type="String" mode="IN" optional="true"/>
+    </service>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Step 6b: updateCustomerRelationship
+         Modifies statusId and/or thruDate of an existing relationship.
+         ═══════════════════════════════════════════════════════════════ -->
+    <service name="updateCustomerRelationship" engine="groovy"
+        location="component://CustomerManagement/groovyScripts/CustomerManagementServices.groovy"
+        invoke="updateCustomerRelationship" auth="true">
+        <description>Update the status or expiry date of an existing party relationship.</description>
+        <attribute name="partyIdFrom"             type="String"    mode="IN" optional="false"/>
+        <attribute name="partyIdTo"               type="String"    mode="IN" optional="false"/>
+        <attribute name="partyRelationshipTypeId" type="String"    mode="IN" optional="false"/>
+        <attribute name="roleTypeIdFrom"          type="String"    mode="IN" optional="true"/>
+        <attribute name="roleTypeIdTo"            type="String"    mode="IN" optional="true"/>
+        <attribute name="statusId"                type="String"    mode="IN" optional="true"/>
+        <attribute name="thruDate"                type="Timestamp" mode="IN" optional="true"/>
+    </service>
+
+</services>

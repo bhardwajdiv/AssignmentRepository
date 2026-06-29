@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://ofbiz.apache.org/Widget-Form"
+    xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form
+        http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <!-- Customer search form — GET FindCustomer -->
+    <form name="FindCustomer" type="single" target="FindCustomer">
+        <field name="noConditionFind"><hidden value="Y"/></field>
+        <field name="partyId"       title="${uiLabelMap.CustomerManagementPartyId}"><text-find/></field>
+        <field name="firstName"     title="${uiLabelMap.CustomerManagementFirstName}"><text-find ignore-case="true"/></field>
+        <field name="lastName"      title="${uiLabelMap.CustomerManagementLastName}"><text-find ignore-case="true"/></field>
+        <field name="emailAddress"  title="${uiLabelMap.CustomerManagementEmail}"><text-find ignore-case="true"/></field>
+        <field name="contactNumber" title="${uiLabelMap.CustomerManagementPhone}"><text-find/></field>
+        <field name="address"       title="${uiLabelMap.CustomerManagementAddress}"><text-find ignore-case="true"/></field>
+        <field name="searchButton"  title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <!-- Create customer form — POST createCustomer -->
+    <form name="CreateCustomer" type="single" target="createCustomer">
+        <field name="emailAddress" title="${uiLabelMap.CustomerManagementEmail}"><text/></field>
+        <field name="firstName"    title="${uiLabelMap.CustomerManagementFirstName}"><text/></field>
+        <field name="lastName"     title="${uiLabelMap.CustomerManagementLastName}"><text/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+
+    <!-- Update customer form — POST updateCustomer -->
+    <form name="UpdateCustomer" type="single" target="updateCustomer">
+        <field name="emailAddress"  title="${uiLabelMap.CustomerManagementEmail}"><text read-only="true"/></field>
+        <field name="contactNumber" title="${uiLabelMap.CustomerManagementPhone}"><text/></field>
+        <field name="address1"      title="${uiLabelMap.CustomerManagementAddress}"><text/></field>
+        <field name="city"          title="City"><text/></field>
+        <field name="postalCode"    title="Postal Code"><text/></field>
+        <field name="countryGeoId"  title="Country Code"><text/></field>
+        <field name="submitButton"  title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </form>
+
+</forms>

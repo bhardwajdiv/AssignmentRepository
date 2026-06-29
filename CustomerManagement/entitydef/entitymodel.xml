@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+
+    <title>Customer Management View Entities</title>
+    <description>View entities for the CustomerManagement plugin</description>
+    <version>1.0</version>
+
+    <!--
+        FindCustomerView joins Person with Party, contact mechanisms, telecom
+        numbers, and postal addresses via outer joins.  Because one person can
+        have many PartyContactMech rows (email, phone, address …), the join
+        produces multiple rows per partyId.  The findCustomer service
+        deduplicates and enriches results through targeted EntityQuery lookups.
+
+        OFBiz contact-mech hierarchy:
+          Person ─► PartyContactMech ─► ContactMech (infoString = email)
+                                     ─► TelecomNumber (contactNumber)
+                                     ─► PostalAddress (address1, city …)
+          PartyContactMechPurpose tags each (party, contactMech) pair with a
+          purpose such as "EmailPrimary", "PHONE_HOME", "GENERAL_LOCATION".
+    -->
+    <view-entity entity-name="FindCustomerView"
+        package-name="org.apache.ofbiz.customermgmt"
+        title="Find Customer View">
+
+        <!-- Step 1: Person is the root entity -->
+        <member-entity entity-alias="PER" entity-name="Person"/>
+
+        <!-- Party gives us statusId / partyTypeId -->
+        <member-entity entity-alias="PTY" entity-name="Party"
+            join-from-alias="PER" join-type="outer">
+            <key-map field-name="partyId"/>
+        </member-entity>
+
+        <!-- All PartyContactMech rows for this party -->
+        <member-entity entity-alias="PCM" entity-name="PartyContactMech"
+            join-from-alias="PER" join-type="outer">
+            <key-map field-name="partyId"/>
+        </member-entity>
+
+        <!-- ContactMech details: infoString holds the email address for
+             EMAIL_ADDRESS type; contactMechTypeId distinguishes the type -->
+        <member-entity entity-alias="CM" entity-name="ContactMech"
+            join-from-alias="PCM" join-type="outer">
+            <key-map field-name="contactMechId"/>
+        </member-entity>
+
+        <!-- Purpose of this contact mechanism for the party
+             (e.g. EmailPrimary, PHONE_HOME, GENERAL_LOCATION) -->
+        <member-entity entity-alias="PCMP" entity-name="PartyContactMechPurpose"
+            join-from-alias="PCM" join-type="outer">
+            <key-map field-name="partyId"/>
+            <key-map field-name="contactMechId"/>
+        </member-entity>
+
+        <!-- Telecom number – non-null only when CM.contactMechTypeId = TELECOM_NUMBER -->
+        <member-entity entity-alias="TCN" entity-name="TelecomNumber"
+            join-from-alias="PCM" join-type="outer">
+            <key-map field-name="contactMechId"/>
+        </member-entity>
+
+        <!-- Postal address – non-null only when CM.contactMechTypeId = POSTAL_ADDRESS -->
+        <member-entity entity-alias="PA" entity-name="PostalAddress"
+            join-from-alias="PCM" join-type="outer">
+            <key-map field-name="contactMechId"/>
+        </member-entity>
+
+        <!-- ── Aliases ── -->
+        <alias entity-alias="PER"  name="partyId"/>
+        <alias entity-alias="PER"  name="firstName"/>
+        <alias entity-alias="PER"  name="lastName"/>
+        <alias entity-alias="PTY"  name="statusId"/>
+        <alias entity-alias="PTY"  name="partyTypeId"/>
+
+        <alias entity-alias="PCM"  name="contactMechId"/>
+        <alias entity-alias="CM"   name="emailAddress"       field="infoString"/>
+        <alias entity-alias="CM"   name="contactMechTypeId"/>
+        <alias entity-alias="PCMP" name="contactMechPurposeTypeId"/>
+
+        <alias entity-alias="TCN"  name="contactNumber"/>
+        <alias entity-alias="TCN"  name="areaCode"/>
+        <alias entity-alias="TCN"  name="countryCode"/>
+
+        <alias entity-alias="PA"   name="address1"/>
+        <alias entity-alias="PA"   name="city"/>
+        <alias entity-alias="PA"   name="stateProvinceGeoId"/>
+        <alias entity-alias="PA"   name="postalCode"/>
+        <alias entity-alias="PA"   name="countryGeoId"/>
+    </view-entity>
+
+</entitymodel>
