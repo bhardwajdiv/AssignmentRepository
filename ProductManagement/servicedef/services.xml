@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+
+    <description>Product Management Services</description>
+    <vendor/>
+    <version>1.0</version>
+
+    <!-- Step 4: Find products with optional filters -->
+    <service name="findProduct" engine="groovy"
+        location="component://ProductManagement/groovyScripts/ProductManagementServices.groovy"
+        invoke="findProduct" auth="true">
+        <description>Search for products using optional filters. Supports partial, case-insensitive name matching.</description>
+        <attribute name="productId"            type="String"     mode="IN" optional="true"/>
+        <attribute name="productName"          type="String"     mode="IN" optional="true"/>
+        <attribute name="priceMin"             type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="priceMax"             type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="productFeatureTypeId" type="String"     mode="IN" optional="true"/>
+        <attribute name="productCategoryId"    type="String"     mode="IN" optional="true"/>
+        <attribute name="productList"          type="List"       mode="OUT" optional="true"/>
+    </service>
+
+    <!-- Step 5a: Create a new product -->
+    <service name="createProduct" engine="groovy"
+        location="component://ProductManagement/groovyScripts/ProductManagementServices.groovy"
+        invoke="createProduct" auth="true">
+        <description>Create a new product. Rejects duplicates by name using findProduct.</description>
+        <attribute name="productName"       type="String"     mode="IN" optional="false"/>
+        <attribute name="productCategoryId" type="String"     mode="IN" optional="false"/>
+        <attribute name="price"             type="BigDecimal" mode="IN" optional="false"/>
+        <attribute name="description"       type="String"     mode="IN" optional="true"/>
+        <attribute name="productId"         type="String"     mode="OUT" optional="false"/>
+    </service>
+
+    <!-- Step 5b: Update an existing product -->
+    <service name="updateProduct" engine="groovy"
+        location="component://ProductManagement/groovyScripts/ProductManagementServices.groovy"
+        invoke="updateProduct" auth="true">
+        <description>Update product name, description, price, and/or add a feature.</description>
+        <attribute name="productId"        type="String"     mode="IN" optional="false"/>
+        <attribute name="productName"      type="String"     mode="IN" optional="true"/>
+        <attribute name="description"      type="String"     mode="IN" optional="true"/>
+        <attribute name="price"            type="BigDecimal" mode="IN" optional="true"/>
+        <attribute name="productFeatureId" type="String"     mode="IN" optional="true"/>
+    </service>
+
+    <!-- Step 6a: Establish virtual-variant relationship -->
+    <service name="assocProductToVirtual" engine="groovy"
+        location="component://ProductManagement/groovyScripts/ProductManagementServices.groovy"
+        invoke="assocProductToVirtual" auth="true">
+        <description>Create a PRODUCT_VARIANT association between a variant and a virtual product.</description>
+        <attribute name="productId"        type="String" mode="IN" optional="false"/>
+        <attribute name="virtualProductId" type="String" mode="IN" optional="false"/>
+    </service>
+
+    <!-- Step 6b: Update an existing virtual-variant relationship -->
+    <service name="updateProductVariant" engine="groovy"
+        location="component://ProductManagement/groovyScripts/ProductManagementServices.groovy"
+        invoke="updateProductVariant" auth="true">
+        <description>Update the thruDate or reassign the virtual parent of a variant association.</description>
+        <attribute name="productId"          type="String"    mode="IN" optional="false"/>
+        <attribute name="virtualProductId"   type="String"    mode="IN" optional="false"/>
+        <attribute name="thruDate"           type="Timestamp" mode="IN" optional="true"/>
+        <attribute name="newVirtualProductId" type="String"   mode="IN" optional="true"/>
+    </service>
+
+</services>

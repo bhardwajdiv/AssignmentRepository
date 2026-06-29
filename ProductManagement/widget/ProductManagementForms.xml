@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://ofbiz.apache.org/Widget-Form"
+    xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form
+        http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <!-- Search form – maps to GET FindProduct request-map -->
+    <form name="FindProduct" type="single" target="FindProduct" default-entity-name="Product">
+        <field name="noConditionFind"><hidden value="Y"/></field>
+        <field name="productId" title="${uiLabelMap.ProductManagementProductId}">
+            <text-find/>
+        </field>
+        <field name="productName" title="${uiLabelMap.ProductManagementProductName}">
+            <text-find ignore-case="true"/>
+        </field>
+        <field name="productCategoryId" title="${uiLabelMap.ProductManagementCategory}">
+            <drop-down allow-empty="true">
+                <entity-options description="${categoryName}" key-field-name="productCategoryId"
+                    entity-name="ProductCategory">
+                    <entity-order-by field-name="categoryName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="productFeatureTypeId" title="${uiLabelMap.ProductManagementFeatureType}">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="productFeatureTypeId"
+                    entity-name="ProductFeatureType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="priceMin" title="Min Price"><text/></field>
+        <field name="priceMax" title="Max Price"><text/></field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <!-- Create form – maps to POST createProduct event -->
+    <form name="CreateProduct" type="single" target="createProduct">
+        <field name="productName" title="${uiLabelMap.ProductManagementProductName}">
+            <text/>
+        </field>
+        <field name="productCategoryId" title="${uiLabelMap.ProductManagementCategory}">
+            <drop-down allow-empty="false">
+                <entity-options description="${categoryName}" key-field-name="productCategoryId"
+                    entity-name="ProductCategory">
+                    <entity-order-by field-name="categoryName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="price" title="${uiLabelMap.ProductManagementPrice}"><text/></field>
+        <field name="description" title="${uiLabelMap.ProductManagementDescription}"><text/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <!-- Update form – maps to POST updateProduct event -->
+    <form name="UpdateProduct" type="single" target="updateProduct">
+        <field name="productId" title="${uiLabelMap.ProductManagementProductId}">
+            <text read-only="true"/>
+        </field>
+        <field name="productName" title="${uiLabelMap.ProductManagementProductName}"><text/></field>
+        <field name="price"       title="${uiLabelMap.ProductManagementPrice}"><text/></field>
+        <field name="description" title="${uiLabelMap.ProductManagementDescription}"><text/></field>
+        <field name="productFeatureId" title="${uiLabelMap.ProductManagementFeature}">
+            <drop-down allow-empty="true">
+                <entity-options description="${description} (${productFeatureTypeId})"
+                    key-field-name="productFeatureId"
+                    entity-name="ProductFeature">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+</forms>

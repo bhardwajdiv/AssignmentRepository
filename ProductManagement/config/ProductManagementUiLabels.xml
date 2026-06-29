@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-properties.xsd">
+
+    <property key="ProductManagementApplication">
+        <value xml:lang="en">Product Management</value>
+    </property>
+    <property key="ProductManagementCompanyName">
+        <value xml:lang="en">OFBiz: Product Management</value>
+    </property>
+    <property key="ProductManagementCompanySubtitle">
+        <value xml:lang="en">Part of the Apache OFBiz Family of Open Source Software</value>
+    </property>
+    <property key="ProductManagementFindProduct">
+        <value xml:lang="en">Find Product</value>
+    </property>
+    <property key="PageTitleFindProduct">
+        <value xml:lang="en">Find Product</value>
+    </property>
+    <property key="ProductManagementProductId">
+        <value xml:lang="en">Product ID</value>
+    </property>
+    <property key="ProductManagementProductName">
+        <value xml:lang="en">Product Name</value>
+    </property>
+    <property key="ProductManagementCategory">
+        <value xml:lang="en">Category</value>
+    </property>
+    <property key="ProductManagementPrice">
+        <value xml:lang="en">Price</value>
+    </property>
+    <property key="ProductManagementDescription">
+        <value xml:lang="en">Description</value>
+    </property>
+    <property key="ProductManagementFeature">
+        <value xml:lang="en">Feature</value>
+    </property>
+    <property key="ProductManagementFeatureType">
+        <value xml:lang="en">Feature Type</value>
+    </property>
+    <property key="ProductManagementViewPermissionError">
+        <value xml:lang="en">You are not allowed to view this page.</value>
+    </property>
+
+</resource>

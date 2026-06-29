@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://ofbiz.apache.org/Widget-Screen"
+    xsi:schemaLocation="http://ofbiz.apache.org/Widget-Screen
+        http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <!-- ════════════════════════════════════════════════════════════════
+         Common decorator: wraps all pages with the OFBiz app chrome
+         ════════════════════════════════════════════════════════════════ -->
+    <screen name="main-decorator">
+        <section>
+            <actions>
+                <set field="layoutSettings.companyName"     from-field="uiLabelMap.ProductManagementCompanyName"/>
+                <set field="layoutSettings.companySubtitle" from-field="uiLabelMap.ProductManagementCompanySubtitle"/>
+                <set field="activeApp"                      value="ProductManagement"/>
+                <set field="applicationMenuName"            value="AppBarMenu"/>
+                <set field="applicationMenuLocation"        value="component://ProductManagement/widget/ProductManagementMenus.xml"/>
+                <set field="applicationTitle"               value="${uiLabelMap.ProductManagementApplication}"/>
+            </actions>
+            <widgets>
+                <include-screen name="ApplicationDecorator"
+                    location="component://commonext/widget/CommonScreens.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         main – landing page
+         ════════════════════════════════════════════════════════════════ -->
+    <screen name="main">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator"
+                    location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.ProductManagementApplication}">
+                            <label text="Welcome to Product Management. Use the menu above to search for products."/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         FindProduct – Step 8: renders findProduct.ftl via platform-specific
+         ════════════════════════════════════════════════════════════════ -->
+    <screen name="FindProduct">
+        <section>
+            <actions>
+                <set field="headerItem"     value="FindProduct"/>
+                <set field="titleProperty"  value="PageTitleFindProduct"/>
+                <script location="component://ProductManagement/webapp/ProductManagement/WEB-INF/actions/FindProduct.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator"
+                    location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html>
+                                <html-template
+                                    location="component://ProductManagement/webapp/ProductManagement/findProduct.ftl"/>
+                            </html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+</screens>

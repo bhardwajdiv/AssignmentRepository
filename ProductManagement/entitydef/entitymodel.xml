@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+
+    <title>Product Management View Entities</title>
+    <description>View entities for the ProductManagement plugin</description>
+    <version>1.0</version>
+
+    <!--
+        FindProductView joins Product with its price, category, and feature data.
+        Outer joins ensure products are returned even when price/category/feature
+        records are absent. Rows are deduplicated by productId in the findProduct
+        service because the 1-to-many joins can produce multiple rows per product.
+    -->
+    <view-entity entity-name="FindProductView"
+        package-name="org.apache.ofbiz.productmgmt"
+        title="Find Product View">
+
+        <member-entity entity-alias="PROD" entity-name="Product"/>
+
+        <member-entity entity-alias="PP" entity-name="ProductPrice"
+            join-from-alias="PROD" join-type="outer">
+            <key-map field-name="productId"/>
+        </member-entity>
+
+        <member-entity entity-alias="PCM" entity-name="ProductCategoryMember"
+            join-from-alias="PROD" join-type="outer">
+            <key-map field-name="productId"/>
+        </member-entity>
+
+        <member-entity entity-alias="PC" entity-name="ProductCategory"
+            join-from-alias="PCM" join-type="outer">
+            <key-map field-name="productCategoryId"/>
+        </member-entity>
+
+        <member-entity entity-alias="PFA" entity-name="ProductFeatureAppl"
+            join-from-alias="PROD" join-type="outer">
+            <key-map field-name="productId"/>
+        </member-entity>
+
+        <member-entity entity-alias="PF" entity-name="ProductFeature"
+            join-from-alias="PFA" join-type="outer">
+            <key-map field-name="productFeatureId"/>
+        </member-entity>
+
+        <alias entity-alias="PROD" name="productId"/>
+        <alias entity-alias="PROD" name="productName" field="internalName"/>
+        <alias entity-alias="PROD" name="productTypeId"/>
+        <alias entity-alias="PROD" name="isVirtual"/>
+        <alias entity-alias="PROD" name="isVariant"/>
+
+        <alias entity-alias="PP" name="price"/>
+        <alias entity-alias="PP" name="productPriceTypeId"/>
+
+        <alias entity-alias="PCM" name="productCategoryId"/>
+        <alias entity-alias="PC"  name="categoryName"/>
+
+        <alias entity-alias="PF"  name="productFeatureId"/>
+        <alias entity-alias="PF"  name="productFeatureTypeId"/>
+        <alias entity-alias="PF"  name="featureDescription" field="description"/>
+    </view-entity>
+
+</entitymodel>
