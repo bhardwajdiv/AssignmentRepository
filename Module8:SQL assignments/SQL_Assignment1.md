@@ -248,10 +248,10 @@ The retailer has set a threshold value for products that are sold online, in ord
 **Fields:** PRODUCT_ID, THRESHOLD
 
 ```sql
-SELECT
-    PRODUCT_ID,
-    MINIMUM_STOCK AS THRESHOLD
-FROM product_facility
-WHERE MINIMUM_STOCK IS NOT NULL
-ORDER BY PRODUCT_ID;
+SELECT pf.product_id,
+       pf.minimum_stock as Threshold
+FROM product_facility pf
+LEFT JOIN facility f
+ON pf.facility_id = f.facility_id
+WHERE facility_type_id = 'CONFIGURATION';
 ```
