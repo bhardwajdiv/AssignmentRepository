@@ -253,5 +253,5 @@ SELECT pf.product_id,
 FROM product_facility pf
 LEFT JOIN facility f
 ON pf.facility_id = f.facility_id
-WHERE facility_type_id = 'CONFIGURATION';
+WHERE f.facility_type_id = 'CONFIGURATION';
 ```
